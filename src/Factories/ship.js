@@ -6,17 +6,17 @@ const ShipFactory = (length) => {
   for (let i = 0; i < length; i++) {
     hitMarks.push("O");
   }
-  const isSunk = () => {
-    console.log("Bye Bye!");
-  };
+  const isSunk = () => "Bye Bye";
   const hit = (location) => {
     hitMarks[location] = "X";
     health -= 1;
     if (health <= 0) {
-      isSunk();
+      return isSunk();
     }
+    return "Ouch";
   };
-  return { hitMarks, hit, health };
+  const getHealth = () => health;
+  return { hitMarks, hit, getHealth };
 };
 
 const sizeThreeShip = ShipFactory(3);
