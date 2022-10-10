@@ -2,6 +2,46 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/Factories/gameboard.js":
+/*!************************************!*\
+  !*** ./src/Factories/gameboard.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var GameboardFactory = function GameboardFactory() {
+  // PLace ship on board
+  var placeShip = function placeShip(direction, length, x, y) {
+    var coords = [[x, y]]; // Check if outside board
+
+    if (coords[length - 1][1] > 10) return "Please place ship inside grid"; // Get coords for placing
+
+    if (direction === "across") {
+      for (var i = 1; i < length; i += 1) {
+        coords.push([x, y + i]);
+      }
+    } // If squares are taken
+
+
+    coords.forEach(function (arr) {
+      return arr.toString() === "3,2" ? coords = "Not here" : coords = coords;
+    });
+    console.log(coords);
+    return coords;
+  };
+
+  return {
+    placeShip: placeShip
+  };
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GameboardFactory);
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js!./src/styles.css":
 /*!**************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js!./src/styles.css ***!
@@ -611,10 +651,14 @@ var __webpack_exports__ = {};
   \**********************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles.css */ "./src/styles.css");
+/* harmony import */ var _Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Factories/gameboard */ "./src/Factories/gameboard.js");
+
 
 console.log("hi");
+var newBoard = (0,_Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__["default"])();
+newBoard.placeShip("across", 3, 4, 1);
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle5efc07f72faed18100b4.js.map
+//# sourceMappingURL=bundle0a19e82bc2cb82a9bd98.js.map

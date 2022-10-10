@@ -5,4 +5,6 @@ console.log("hi");
 
 const newBoard = GameboardFactory();
 
-newBoard.placeShip("across", 3, 4, 1);
+console.log(newBoard.placeShip("across", 3, 4, 2));
+console.log(newBoard.placeShip("down", 4, 8, 2));
+
