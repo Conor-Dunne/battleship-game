@@ -10,17 +10,17 @@ const GameboardFactory = () => {
   }
 
   // PLace ship on board
-  const placeShip = (name, direction, length, x, y) => {
-    const coords = [[x, y]];
+  const placeShip = (ship, direction, x, y) => {
+    let coords = [[x, y]];
 
     // Get coords for placing
-    for (let i = 1; i < length; i += 1) {
+    for (let i = 1; i < ship.getLength(); i += 1) {
       if (direction === "across") {
         coords.push([x, y + i]);
       } else coords.push([x + i, y]);
     }
-
-    console.log(coords);
+    coords = coords.map((arr) => arr.toString());
+    console.log("Coords:", coords);
 
     // Check if outside board
     // if (coords[length - 1][1] > 10) return "Please place ship inside grid";
@@ -34,11 +34,15 @@ const GameboardFactory = () => {
     }
 
     // coords.forEach((arr) => shipPositions.push(arr.toString()));
-    shipPositions.push({ name, coords });
+    shipPositions.push({ name: ship.getName(), coords });
   };
 
   const receiveAttack = (x, y) => {
-    console.log(`Attack received at coordinares [${[x, y]}]`);
+    shipPositions.forEach((obj) =>
+      obj.coords.includes([x, y].toString())
+        ? console.log(`${obj.name} hit at ${([x,y])}`)
+        : "Miss"
+    );
   };
   return {
     placeShip,

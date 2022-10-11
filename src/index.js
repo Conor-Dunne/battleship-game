@@ -9,8 +9,9 @@ const newBoard = GameboardFactory();
 const SizeFourA = ShipFactory("SizeFourA", 4);
 const SizeFourB = ShipFactory("SizeFourB", 4);
 
-console.log(
-  newBoard.placeShip(SizeFourA.getName(), "across", SizeFourA.getLength(), 3, 1)
-);
+console.log(newBoard.placeShip(SizeFourA, "across", 3, 1));
+console.log(newBoard.placeShip(SizeFourB, "across", 5, 1));
 
-console.log(newBoard.shipPositions[0].coords[0].toString());
+console.log(newBoard.shipPositions);
+
+console.log(newBoard.receiveAttack(3, 4));
