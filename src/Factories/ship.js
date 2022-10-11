@@ -1,11 +1,9 @@
 /* eslint-disable no-plusplus */
 /* eslint-disable no-unused-vars */
-const ShipFactory = (length) => {
+const ShipFactory = (name, length) => {
   let health = length;
   const hitMarks = [];
-  for (let i = 0; i < length; i++) {
-    hitMarks.push("O");
-  }
+ 
   const isSunk = () => "Bye Bye";
   const hit = (location) => {
     hitMarks[location] = "X";
@@ -16,11 +14,10 @@ const ShipFactory = (length) => {
     return "Ouch";
   };
   const getHealth = () => health;
-  return { hitMarks, hit, getHealth };
+
+  const setCoords = (coords) => hitMarks.push(coords);
+
+  return { hitMarks, hit, getHealth, setCoords };
 };
-
-const sizeThreeShip = ShipFactory(3);
-
-console.log(sizeThreeShip.hitMarks);
 
 export default ShipFactory;
