@@ -13,11 +13,16 @@ const ShipFactory = (name, length) => {
     }
     return "Ouch";
   };
+
+  const getLength = () => length;
+
+  const getName = () => name;
+
   const getHealth = () => health;
 
   const setCoords = (coords) => hitMarks.push(coords);
 
-  return { hitMarks, hit, getHealth, setCoords };
+  return { hitMarks, hit, getHealth, setCoords, getName, getLength };
 };
 
 export default ShipFactory;

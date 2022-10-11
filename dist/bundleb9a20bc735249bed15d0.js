@@ -12,33 +12,118 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* eslint-disable no-return-assign */
 var GameboardFactory = function GameboardFactory() {
-  // PLace ship on board
-  var placeShip = function placeShip(direction, length, x, y) {
-    var coords = [[x, y]]; // Check if outside board
+  var board = [];
+  var shipPositions = [];
 
-    if (coords[length - 1][1] > 10) return "Please place ship inside grid"; // Get coords for placing
+  for (var i = 1; i < 11; i += 1) {
+    for (var j = 1; j < 11; j += 1) {
+      board.push([i, j]);
+    }
+  } // PLace ship on board
 
-    if (direction === "across") {
-      for (var i = 1; i < length; i += 1) {
-        coords.push([x, y + i]);
+
+  var placeShip = function placeShip(name, direction, length, x, y) {
+    var coords = [[x, y]]; // Get coords for placing
+
+    for (var _i = 1; _i < length; _i += 1) {
+      if (direction === "across") {
+        coords.push([x, y + _i]);
+      } else coords.push([x + _i, y]);
+    } // Check if outside board
+
+
+    if (coords[length - 1][1] > 10) return "Please place ship inside grid"; // Check if squares are taken
+
+    for (var _i2 = 0; _i2 < coords.length; _i2 += 1) {
+      if (shipPositions.includes(coords[_i2].toString())) {
+        console.log("Stop");
+        return "Not here";
       }
-    } // If squares are taken
+    } // coords.forEach((arr) => shipPositions.push(arr.toString()));
 
 
-    coords.forEach(function (arr) {
-      return arr.toString() === "3,2" ? coords = "Not here" : coords = coords;
+    shipPositions.push({
+      name: name,
+      coords: coords
     });
-    console.log(coords);
-    return coords;
+  };
+
+  var receiveAttack = function receiveAttack(x, y) {
+    console.log("Attack received at coordinares [".concat([x, y], "]"));
   };
 
   return {
-    placeShip: placeShip
+    placeShip: placeShip,
+    receiveAttack: receiveAttack,
+    shipPositions: shipPositions
   };
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GameboardFactory);
+
+/***/ }),
+
+/***/ "./src/Factories/ship.js":
+/*!*******************************!*\
+  !*** ./src/Factories/ship.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* eslint-disable no-plusplus */
+
+/* eslint-disable no-unused-vars */
+var ShipFactory = function ShipFactory(name, length) {
+  var health = length;
+  var hitMarks = [];
+
+  var isSunk = function isSunk() {
+    return "Bye Bye";
+  };
+
+  var hit = function hit(location) {
+    hitMarks[location] = "X";
+    health -= 1;
+
+    if (health <= 0) {
+      return isSunk();
+    }
+
+    return "Ouch";
+  };
+
+  var getLength = function getLength() {
+    return length;
+  };
+
+  var getName = function getName() {
+    return name;
+  };
+
+  var getHealth = function getHealth() {
+    return health;
+  };
+
+  var setCoords = function setCoords(coords) {
+    return hitMarks.push(coords);
+  };
+
+  return {
+    hitMarks: hitMarks,
+    hit: hit,
+    getHealth: getHealth,
+    setCoords: setCoords,
+    getName: getName,
+    getLength: getLength
+  };
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ShipFactory);
 
 /***/ }),
 
@@ -652,13 +737,17 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles.css */ "./src/styles.css");
 /* harmony import */ var _Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Factories/gameboard */ "./src/Factories/gameboard.js");
+/* harmony import */ var _Factories_ship__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Factories/ship */ "./src/Factories/ship.js");
+
 
 
 console.log("hi");
 var newBoard = (0,_Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__["default"])();
-newBoard.placeShip("across", 3, 4, 1);
+var SizeFourA = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeFourA", 4);
+var SizeFourB = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeFourB", 4);
+console.log(newBoard.placeShip(SizeFourA.getName, "across", SizeFourA.getLength));
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle0a19e82bc2cb82a9bd98.js.map
+//# sourceMappingURL=bundleb9a20bc735249bed15d0.js.map

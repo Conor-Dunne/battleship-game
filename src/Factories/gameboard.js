@@ -10,7 +10,7 @@ const GameboardFactory = () => {
   }
 
   // PLace ship on board
-  const placeShip = (direction, length, x, y) => {
+  const placeShip = (name, direction, length, x, y) => {
     const coords = [[x, y]];
 
     // Get coords for placing
@@ -20,8 +20,10 @@ const GameboardFactory = () => {
       } else coords.push([x + i, y]);
     }
 
+    console.log(coords);
+
     // Check if outside board
-    if (coords[length - 1][1] > 10) return "Please place ship inside grid";
+    // if (coords[length - 1][1] > 10) return "Please place ship inside grid";
 
     // Check if squares are taken
     for (let i = 0; i < coords.length; i += 1) {
@@ -31,7 +33,8 @@ const GameboardFactory = () => {
       }
     }
 
-    coords.forEach((arr) => shipPositions.push(arr.toString()));
+    // coords.forEach((arr) => shipPositions.push(arr.toString()));
+    shipPositions.push({ name, coords });
   };
 
   const receiveAttack = (x, y) => {
@@ -40,6 +43,7 @@ const GameboardFactory = () => {
   return {
     placeShip,
     receiveAttack,
+    shipPositions,
   };
 };
 
