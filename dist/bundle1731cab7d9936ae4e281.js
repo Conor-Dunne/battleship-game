@@ -16,6 +16,7 @@ __webpack_require__.r(__webpack_exports__);
 var GameboardFactory = function GameboardFactory() {
   var board = [];
   var shipPositions = [];
+  var shipsArray = [];
 
   for (var i = 1; i < 11; i += 1) {
     for (var j = 1; j < 11; j += 1) {
@@ -24,17 +25,21 @@ var GameboardFactory = function GameboardFactory() {
   } // PLace ship on board
 
 
-  var placeShip = function placeShip(name, direction, length, x, y) {
+  var placeShip = function placeShip(ship, direction, x, y) {
     var coords = [[x, y]]; // Get coords for placing
 
-    for (var _i = 1; _i < length; _i += 1) {
+    for (var _i = 1; _i < ship.getLength(); _i += 1) {
       if (direction === "across") {
         coords.push([x, y + _i]);
       } else coords.push([x + _i, y]);
-    } // Check if outside board
+    }
 
-
-    if (coords[length - 1][1] > 10) return "Please place ship inside grid"; // Check if squares are taken
+    coords = coords.map(function (arr) {
+      return arr.toString();
+    });
+    console.log("Coords:", coords); // Check if outside board
+    // if (coords[length - 1][1] > 10) return "Please place ship inside grid";
+    // Check if squares are taken
 
     for (var _i2 = 0; _i2 < coords.length; _i2 += 1) {
       if (shipPositions.includes(coords[_i2].toString())) {
@@ -45,19 +50,35 @@ var GameboardFactory = function GameboardFactory() {
 
 
     shipPositions.push({
-      name: name,
+      name: ship.getName(),
       coords: coords
     });
-  };
+  }; // receive attack coords
+
 
   var receiveAttack = function receiveAttack(x, y) {
-    console.log("Attack received at coordinares [".concat([x, y], "]"));
+    var hitShip = "";
+    var hitIndex = "";
+    var hitPos = "";
+    shipPositions.forEach(function (obj) {
+      return obj.coords.includes([x, y].toString()) ? hitShip = obj : "Nashi";
+    });
+    hitPos = hitShip.coords.indexOf([x, y].toString());
+    console.log("HitShip", hitShip, hitPos);
+
+    var matchShipName = function matchShipName(obj) {
+      return obj.shipName === hitShip.name;
+    };
+
+    var indexToHit = shipsArray.findIndex(matchShipName);
+    shipsArray[indexToHit].hit(hitPos);
   };
 
   return {
     placeShip: placeShip,
     receiveAttack: receiveAttack,
-    shipPositions: shipPositions
+    shipPositions: shipPositions,
+    shipsArray: shipsArray
   };
 };
 
@@ -745,9 +766,12 @@ console.log("hi");
 var newBoard = (0,_Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__["default"])();
 var SizeFourA = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeFourA", 4);
 var SizeFourB = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeFourB", 4);
-console.log(newBoard.placeShip(SizeFourA.getName, "across", SizeFourA.getLength));
+console.log(newBoard.placeShip(SizeFourA, "across", 3, 1));
+console.log(newBoard.placeShip(SizeFourB, "across", 5, 1));
+console.log(newBoard.shipPositions);
+console.log(newBoard.receiveAttack(3, 4));
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundleb9a20bc735249bed15d0.js.map
+//# sourceMappingURL=bundle1731cab7d9936ae4e281.js.map

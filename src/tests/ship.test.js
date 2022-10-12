@@ -3,10 +3,10 @@
 /* eslint-disable no-unused-vars */
 import ShipFactory from "../Factories/ship";
 
-const smallShip = ShipFactory(3);
+const smallShip = ShipFactory("smallShip", 3);
 
 const loop = function (num) {
-  const thisShip = ShipFactory(num);
+  const thisShip = ShipFactory("thisShip", num);
   for (let i = 0; i < num - 1; i++) {
     thisShip.hit(i);
   }
@@ -14,7 +14,7 @@ const loop = function (num) {
 };
 
 test("Has corrrect length", () => {
-  expect(smallShip.hitMarks).toStrictEqual(["O", "O", "O"]);
+  expect(smallShip.getLength()).toStrictEqual(3);
 });
 
 test("Will sink after hits equal length", () => {

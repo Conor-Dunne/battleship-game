@@ -2,6 +2,7 @@
 const GameboardFactory = () => {
   const board = [];
   const shipPositions = [];
+  const shipsArray = [];
 
   for (let i = 1; i < 11; i += 1) {
     for (let j = 1; j < 11; j += 1) {
@@ -20,7 +21,6 @@ const GameboardFactory = () => {
       } else coords.push([x + i, y]);
     }
     coords = coords.map((arr) => arr.toString());
-    console.log("Coords:", coords);
 
     // Check if outside board
     // if (coords[length - 1][1] > 10) return "Please place ship inside grid";
@@ -34,20 +34,38 @@ const GameboardFactory = () => {
     }
 
     // coords.forEach((arr) => shipPositions.push(arr.toString()));
-    shipPositions.push({ name: ship.getName(), coords });
+    shipPositions.push({
+      name: ship.getName(),
+      coords,
+    });
+    return coords;
   };
 
+  // receive attack coords
   const receiveAttack = (x, y) => {
+    let hitShip = "";
+    let hitIndex = "";
+    let hitPos = ""
+
     shipPositions.forEach((obj) =>
-      obj.coords.includes([x, y].toString())
-        ? console.log(`${obj.name} hit at ${([x,y])}`)
-        : "Miss"
+      obj.coords.includes([x, y].toString()) ? (hitShip = obj) : "Nashi"
     );
+
+    hitPos = hitShip.coords.indexOf([x, y].toString());
+
+    console.log("HitShip", hitShip, hitPos);
+
+    const matchShipName = (obj) => obj.shipName === hitShip.name;
+
+    const indexToHit = shipsArray.findIndex(matchShipName);
+
+    shipsArray[indexToHit].hit(hitPos);
   };
   return {
     placeShip,
     receiveAttack,
     shipPositions,
+    shipsArray,
   };
 };
 
