@@ -36,15 +36,15 @@ var GameboardFactory = function GameboardFactory() {
 
     coords = coords.map(function (arr) {
       return arr.toString();
-    });
-    console.log("Coords:", coords); // Check if outside board
+    }); // Check if outside board
     // if (coords[length - 1][1] > 10) return "Please place ship inside grid";
     // Check if squares are taken
 
-    for (var _i2 = 0; _i2 < coords.length; _i2 += 1) {
-      if (shipPositions.includes(coords[_i2].toString())) {
-        console.log("Stop");
-        return "Not here";
+    for (var _i2 = 0; _i2 < shipPositions.length; _i2 += 1) {
+      for (var _j = 0; _j < coords.length - 1; _j += 1) {
+        if (shipPositions[_i2].coords.includes(coords[_j])) {
+          return "Can't place ship here.";
+        }
       }
     } // coords.forEach((arr) => shipPositions.push(arr.toString()));
 
@@ -53,6 +53,7 @@ var GameboardFactory = function GameboardFactory() {
       name: ship.getName(),
       coords: coords
     });
+    return coords;
   }; // receive attack coords
 
 
@@ -766,12 +767,13 @@ console.log("hi");
 var newBoard = (0,_Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__["default"])();
 var SizeFourA = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeFourA", 4);
 var SizeFourB = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeFourB", 4);
-console.log(newBoard.placeShip(SizeFourA, "across", 3, 1));
-console.log(newBoard.placeShip(SizeFourB, "across", 5, 1));
-console.log(newBoard.shipPositions);
-console.log(newBoard.receiveAttack(3, 4));
+var SizeThreeA = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeThreeA", 3);
+newBoard.placeShip(SizeFourA, "across", 3, 1);
+newBoard.placeShip(SizeFourB, "across", 4, 1);
+newBoard.placeShip(SizeThreeA, "across", 3, 3);
+console.log("Ship Positions", newBoard.shipPositions);
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle1731cab7d9936ae4e281.js.map
+//# sourceMappingURL=bundlee8dbffdf24cf7ac8f69f.js.map

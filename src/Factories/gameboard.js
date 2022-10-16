@@ -26,10 +26,11 @@ const GameboardFactory = () => {
     // if (coords[length - 1][1] > 10) return "Please place ship inside grid";
 
     // Check if squares are taken
-    for (let i = 0; i < coords.length; i += 1) {
-      if (shipPositions.includes(coords[i].toString())) {
-        console.log("Stop");
-        return "Not here";
+    for (let i = 0; i < shipPositions.length; i += 1) {
+      for (let j = 0; j < coords.length - 1; j += 1) {
+        if (shipPositions[i].coords.includes(coords[j])) {
+          return "Can't place ship here.";
+        }
       }
     }
 
@@ -45,7 +46,7 @@ const GameboardFactory = () => {
   const receiveAttack = (x, y) => {
     let hitShip = "";
     let hitIndex = "";
-    let hitPos = ""
+    let hitPos = "";
 
     shipPositions.forEach((obj) =>
       obj.coords.includes([x, y].toString()) ? (hitShip = obj) : "Nashi"
