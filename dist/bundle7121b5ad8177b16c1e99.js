@@ -18,6 +18,12 @@ var GameboardFactory = function GameboardFactory() {
   var shipPositions = [];
   var shipsArray = [];
 
+  var checkIfGameOver = function checkIfGameOver() {
+    return shipsArray.every(function (ship) {
+      return ship.sunk === true;
+    });
+  };
+
   for (var i = 1; i < 11; i += 1) {
     for (var j = 1; j < 11; j += 1) {
       board.push([i, j]);
@@ -46,8 +52,9 @@ var GameboardFactory = function GameboardFactory() {
           return "Can't place ship here.";
         }
       }
-    } // coords.forEach((arr) => shipPositions.push(arr.toString()));
+    }
 
+    shipsArray.push(ship); // coords.forEach((arr) => shipPositions.push(arr.toString()));
 
     shipPositions.push({
       name: ship.getName(),
@@ -59,21 +66,24 @@ var GameboardFactory = function GameboardFactory() {
 
   var receiveAttack = function receiveAttack(x, y) {
     var hitShip = "";
-    var hitIndex = "";
+    var indexToHit = "";
     var hitPos = "";
     shipPositions.forEach(function (obj) {
       return obj.coords.includes([x, y].toString()) ? hitShip = obj : "Nashi";
     });
     hitPos = hitShip.coords.indexOf([x, y].toString());
-    console.log("HitShip", hitShip, hitPos);
-
-    var matchShipName = function matchShipName(obj) {
-      return obj.shipName === hitShip.name;
-    };
-
-    var indexToHit = shipsArray.findIndex(matchShipName);
+    shipsArray.forEach(function (obj) {
+      if (obj.getName() === hitShip.name) {
+        indexToHit = shipsArray.indexOf(obj);
+      }
+    });
     shipsArray[indexToHit].hit(hitPos);
+    return "It's a hit!";
   };
+
+  if (checkIfGameOver()) {
+    return "Game Over";
+  }
 
   return {
     placeShip: placeShip,
@@ -102,9 +112,11 @@ __webpack_require__.r(__webpack_exports__);
 /* eslint-disable no-unused-vars */
 var ShipFactory = function ShipFactory(name, length) {
   var health = length;
+  var sunk = false;
   var hitMarks = [];
 
   var isSunk = function isSunk() {
+    sunk = true;
     return "Bye Bye";
   };
 
@@ -117,6 +129,10 @@ var ShipFactory = function ShipFactory(name, length) {
     }
 
     return "Ouch";
+  };
+
+  var sunkStatus = function sunkStatus() {
+    return sunk;
   };
 
   var getLength = function getLength() {
@@ -141,7 +157,9 @@ var ShipFactory = function ShipFactory(name, length) {
     getHealth: getHealth,
     setCoords: setCoords,
     getName: getName,
-    getLength: getLength
+    getLength: getLength,
+    sunkStatus: sunkStatus,
+    sunk: sunk
   };
 };
 
@@ -771,9 +789,9 @@ var SizeThreeA = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("Si
 newBoard.placeShip(SizeFourA, "across", 3, 1);
 newBoard.placeShip(SizeFourB, "across", 4, 1);
 newBoard.placeShip(SizeThreeA, "across", 3, 3);
-console.log("Ship Positions", newBoard.shipPositions);
+console.log(newBoard.receiveAttack(3, 1));
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundlee8dbffdf24cf7ac8f69f.js.map
+//# sourceMappingURL=bundle7121b5ad8177b16c1e99.js.map

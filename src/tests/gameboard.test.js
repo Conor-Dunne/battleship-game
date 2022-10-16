@@ -30,3 +30,17 @@ test("Will not place ship on occupied square", () => {
     "Can't place ship here."
   );
 });
+
+test("Will send hit coords to correct", () => {
+  expect(testBoard.receiveAttack(4, 1)).toBe("It's a hit!");
+});
+
+test("Will report gameover if all ships are sunk", () => {
+  expect(testBoard.receiveAttack(4, 2)).toBe("It's a hit!");
+  expect(testBoard.receiveAttack(4, 3)).toBe("It's a hit!");
+  expect(testBoard.receiveAttack(4, 4)).toBe("It's a hit!");
+  expect(testBoard.receiveAttack(5, 1)).toBe("It's a hit!");
+  expect(testBoard.receiveAttack(6, 1)).toBe("It's a hit!");
+  expect(testBoard.receiveAttack(7, 1)).toBe("It's a hit!");
+  expect(testBoard.receiveAttack(8, 1)).toBe("It's a hit!");
+});

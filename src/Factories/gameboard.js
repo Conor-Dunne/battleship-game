@@ -3,6 +3,8 @@ const GameboardFactory = () => {
   const board = [];
   const shipPositions = [];
   const shipsArray = [];
+  const checkIfGameOver = () =>
+    shipsArray.every((ship) => ship.sunkStatus() === true);
 
   for (let i = 1; i < 11; i += 1) {
     for (let j = 1; j < 11; j += 1) {
@@ -33,7 +35,7 @@ const GameboardFactory = () => {
         }
       }
     }
-
+    shipsArray.push(ship);
     // coords.forEach((arr) => shipPositions.push(arr.toString()));
     shipPositions.push({
       name: ship.getName(),
@@ -45,7 +47,7 @@ const GameboardFactory = () => {
   // receive attack coords
   const receiveAttack = (x, y) => {
     let hitShip = "";
-    let hitIndex = "";
+    let indexToHit = "";
     let hitPos = "";
 
     shipPositions.forEach((obj) =>
@@ -54,14 +56,19 @@ const GameboardFactory = () => {
 
     hitPos = hitShip.coords.indexOf([x, y].toString());
 
-    console.log("HitShip", hitShip, hitPos);
-
-    const matchShipName = (obj) => obj.shipName === hitShip.name;
-
-    const indexToHit = shipsArray.findIndex(matchShipName);
+    shipsArray.forEach((obj) => {
+      if (obj.getName() === hitShip.name) {
+        indexToHit = shipsArray.indexOf(obj);
+      }
+    });
 
     shipsArray[indexToHit].hit(hitPos);
+    if (checkIfGameOver()) {
+      return "Game Over";
+    }
+    return "It's a hit!";
   };
+
   return {
     placeShip,
     receiveAttack,

@@ -2,9 +2,13 @@
 /* eslint-disable no-unused-vars */
 const ShipFactory = (name, length) => {
   let health = length;
+  let sunk = false;
   const hitMarks = [];
- 
-  const isSunk = () => "Bye Bye";
+
+  const isSunk = () => {
+    sunk = true;
+    return "Bye Bye";
+  };
   const hit = (location) => {
     hitMarks[location] = "X";
     health -= 1;
@@ -14,6 +18,8 @@ const ShipFactory = (name, length) => {
     return "Ouch";
   };
 
+  const sunkStatus = () => sunk;
+
   const getLength = () => length;
 
   const getName = () => name;
@@ -22,7 +28,16 @@ const ShipFactory = (name, length) => {
 
   const setCoords = (coords) => hitMarks.push(coords);
 
-  return { hitMarks, hit, getHealth, setCoords, getName, getLength };
+  return {
+    hitMarks,
+    hit,
+    getHealth,
+    setCoords,
+    getName,
+    getLength,
+    sunkStatus,
+    sunk,
+  };
 };
 
 export default ShipFactory;
