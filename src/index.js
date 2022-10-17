@@ -17,9 +17,9 @@ console.log(newBoard.receiveAttack(3, 1));
 console.log(newBoard.receiveAttack(3, 2));
 console.log(newBoard.receiveAttack(3, 3));
 console.log(newBoard.receiveAttack(3, 4));
-console.log(newBoard.receiveAttack(4, 1 ));
-console.log(newBoard.receiveAttack(4, 2 ));
-console.log(newBoard.receiveAttack(4, 3 ));
-console.log(newBoard.receiveAttack(4, 4 ));
-
+console.log(newBoard.receiveAttack(4, 1));
+console.log(newBoard.receiveAttack(4, 2));
+console.log(newBoard.receiveAttack(4, 3));
+console.log(newBoard.receiveAttack(6, 3));
+console.log(newBoard.receiveAttack(7, 3));
 console.log(newBoard.shipsArray[0].sunkStatus());

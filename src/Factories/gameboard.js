@@ -3,6 +3,8 @@ const GameboardFactory = () => {
   const board = [];
   const shipPositions = [];
   const shipsArray = [];
+  const missedHits = [];
+  const takenSquares = []
   const checkIfGameOver = () =>
     shipsArray.every((ship) => ship.sunkStatus() === true);
 
@@ -41,6 +43,10 @@ const GameboardFactory = () => {
       name: ship.getName(),
       coords,
     });
+
+    coords.forEach((coord) => takenSquares.push(coord));
+
+
     return coords;
   };
 
@@ -49,6 +55,10 @@ const GameboardFactory = () => {
     let hitShip = "";
     let indexToHit = "";
     let hitPos = "";
+    if (takenSquares.indexOf([x, y].toString()) === -1) {
+      missedHits.push([x, y].toString());
+      return "Miss!";
+    }
 
     shipPositions.forEach((obj) =>
       obj.coords.includes([x, y].toString()) ? (hitShip = obj) : "Nashi"

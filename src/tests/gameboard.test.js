@@ -17,11 +17,10 @@ test("Will place a ship across on gameboard", () => {
 });
 
 test("Will place a ship down on gameboard", () => {
-  expect(testBoard.placeShip(testShipForBoard, "down", 5, 1)).toEqual([
+  expect(testBoard.placeShip(secondShip, "down", 5, 1)).toEqual([
     "5,1",
     "6,1",
     "7,1",
-    "8,1",
   ]);
 });
 
@@ -35,12 +34,19 @@ test("Will send hit coords to correct", () => {
   expect(testBoard.receiveAttack(4, 1)).toBe("It's a hit!");
 });
 
+test("Should have a total of two ships on the boar", () => {
+  expect(testBoard.shipsArray.length).toBe(2);
+});
+
 test("Will report gameover if all ships are sunk", () => {
   expect(testBoard.receiveAttack(4, 2)).toBe("It's a hit!");
   expect(testBoard.receiveAttack(4, 3)).toBe("It's a hit!");
   expect(testBoard.receiveAttack(4, 4)).toBe("It's a hit!");
   expect(testBoard.receiveAttack(5, 1)).toBe("It's a hit!");
   expect(testBoard.receiveAttack(6, 1)).toBe("It's a hit!");
-  expect(testBoard.receiveAttack(7, 1)).toBe("It's a hit!");
-  expect(testBoard.receiveAttack(8, 1)).toBe("It's a hit!");
+  expect(testBoard.receiveAttack(7, 1)).toBe("Game Over");
+});
+
+test("Will log a missed hit on empty square", () => {
+  expect(testBoard.receiveAttack(8, 3)).toBe("Miss!");
 });
