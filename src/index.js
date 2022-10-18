@@ -1,6 +1,7 @@
 import "./styles.css";
 import GameboardFactory from "./Factories/gameboard";
 import ShipFactory from "./Factories/ship";
+import Player from "./Factories/player";
 
 console.log("hi");
 
@@ -23,3 +24,7 @@ console.log(newBoard.receiveAttack(4, 3));
 console.log(newBoard.receiveAttack(6, 3));
 console.log(newBoard.receiveAttack(7, 3));
 console.log(newBoard.shipsArray[0].sunkStatus());
+
+
+const human = Player("Conor");
+console.log(human.pLayerName);

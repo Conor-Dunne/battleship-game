@@ -17,10 +17,12 @@ var GameboardFactory = function GameboardFactory() {
   var board = [];
   var shipPositions = [];
   var shipsArray = [];
+  var missedHits = [];
+  var takenSquares = [];
 
   var checkIfGameOver = function checkIfGameOver() {
     return shipsArray.every(function (ship) {
-      return ship.sunk === true;
+      return ship.sunkStatus() === true;
     });
   };
 
@@ -60,6 +62,9 @@ var GameboardFactory = function GameboardFactory() {
       name: ship.getName(),
       coords: coords
     });
+    coords.forEach(function (coord) {
+      return takenSquares.push(coord);
+    });
     return coords;
   }; // receive attack coords
 
@@ -68,6 +73,12 @@ var GameboardFactory = function GameboardFactory() {
     var hitShip = "";
     var indexToHit = "";
     var hitPos = "";
+
+    if (takenSquares.indexOf([x, y].toString()) === -1) {
+      missedHits.push([x, y].toString());
+      return "Miss!";
+    }
+
     shipPositions.forEach(function (obj) {
       return obj.coords.includes([x, y].toString()) ? hitShip = obj : "Nashi";
     });
@@ -78,12 +89,13 @@ var GameboardFactory = function GameboardFactory() {
       }
     });
     shipsArray[indexToHit].hit(hitPos);
+
+    if (checkIfGameOver()) {
+      return "Game Over";
+    }
+
     return "It's a hit!";
   };
-
-  if (checkIfGameOver()) {
-    return "Game Over";
-  }
 
   return {
     placeShip: placeShip,
@@ -788,10 +800,19 @@ var SizeFourB = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("Siz
 var SizeThreeA = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeThreeA", 3);
 newBoard.placeShip(SizeFourA, "across", 3, 1);
 newBoard.placeShip(SizeFourB, "across", 4, 1);
-newBoard.placeShip(SizeThreeA, "across", 3, 3);
+console.log(newBoard.shipPositions);
 console.log(newBoard.receiveAttack(3, 1));
+console.log(newBoard.receiveAttack(3, 2));
+console.log(newBoard.receiveAttack(3, 3));
+console.log(newBoard.receiveAttack(3, 4));
+console.log(newBoard.receiveAttack(4, 1));
+console.log(newBoard.receiveAttack(4, 2));
+console.log(newBoard.receiveAttack(4, 3));
+console.log(newBoard.receiveAttack(6, 3));
+console.log(newBoard.receiveAttack(7, 3));
+console.log(newBoard.shipsArray[0].sunkStatus());
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle7121b5ad8177b16c1e99.js.map
+//# sourceMappingURL=bundlef12c9ee4d282fb977c91.js.map
