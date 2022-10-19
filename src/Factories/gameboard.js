@@ -1,10 +1,13 @@
 /* eslint-disable no-return-assign */
-const GameboardFactory = () => {
+const GameboardFactory = (name) => {
+  const boardName = () => name;
   const board = [];
   const shipPositions = [];
   const shipsArray = [];
   const missedHits = [];
-  const takenSquares = []
+  const takenSquares = [];
+  const receivedAttacksCoords = [];
+
   const checkIfGameOver = () =>
     shipsArray.every((ship) => ship.sunkStatus() === true);
 
@@ -24,10 +27,11 @@ const GameboardFactory = () => {
         coords.push([x, y + i]);
       } else coords.push([x + i, y]);
     }
-    coords = coords.map((arr) => arr.toString());
-
     // Check if outside board
-    // if (coords[length - 1][1] > 10) return "Please place ship inside grid";
+    if (coords[coords.length - 1][1] > 10)
+      return "Please place ship inside grid";
+
+    coords = coords.map((arr) => arr.toString());
 
     // Check if squares are taken
     for (let i = 0; i < shipPositions.length; i += 1) {
@@ -46,7 +50,6 @@ const GameboardFactory = () => {
 
     coords.forEach((coord) => takenSquares.push(coord));
 
-
     return coords;
   };
 
@@ -55,6 +58,12 @@ const GameboardFactory = () => {
     let hitShip = "";
     let indexToHit = "";
     let hitPos = "";
+    if (receivedAttacksCoords.indexOf([x, y].toString()) > -1) {
+      return "Please select another square";
+    }
+
+    receivedAttacksCoords.push([x, y].toString());
+
     if (takenSquares.indexOf([x, y].toString()) === -1) {
       missedHits.push([x, y].toString());
       return "Miss!";
@@ -78,7 +87,6 @@ const GameboardFactory = () => {
     }
     return "It's a hit!";
   };
-
   return {
     placeShip,
     receiveAttack,

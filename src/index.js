@@ -3,28 +3,29 @@ import GameboardFactory from "./Factories/gameboard";
 import ShipFactory from "./Factories/ship";
 import Player from "./Factories/player";
 
-console.log("hi");
+const playerboard = GameboardFactory("player");
+const computerBoard = GameboardFactory("computer");
 
-const newBoard = GameboardFactory();
+const playerShipFourA = ShipFactory("SizeFourA", 4);
+const playerShipFourB = ShipFactory("SizeFourB", 4);
+const playerShipThreeA = ShipFactory("SizeThreeA", 3);
 
-const SizeFourA = ShipFactory("SizeFourA", 4);
-const SizeFourB = ShipFactory("SizeFourB", 4);
-const SizeThreeA = ShipFactory("SizeThreeA", 3);
+const computerShipFourA = ShipFactory("SizeFourA", 4);
+const computerShipFourB = ShipFactory("SizeFourB", 4);
+const computerShipThreeA = ShipFactory("SizeThreeA", 3);
 
-newBoard.placeShip(SizeFourA, "across", 3, 1);
-newBoard.placeShip(SizeFourB, "across", 4, 1);
-console.log(newBoard.shipPositions);
-console.log(newBoard.receiveAttack(3, 1));
-console.log(newBoard.receiveAttack(3, 2));
-console.log(newBoard.receiveAttack(3, 3));
-console.log(newBoard.receiveAttack(3, 4));
-console.log(newBoard.receiveAttack(4, 1));
-console.log(newBoard.receiveAttack(4, 2));
-console.log(newBoard.receiveAttack(4, 3));
-console.log(newBoard.receiveAttack(6, 3));
-console.log(newBoard.receiveAttack(7, 3));
-console.log(newBoard.shipsArray[0].sunkStatus());
+const human = Player("Conor", computerBoard);
+const computer = Player("computer", playerboard);
+
+playerboard.placeShip(playerShipFourA, "down", 2, 1);
+playerboard.placeShip(playerShipFourB, "across", 5, 5);
+playerboard.placeShip(playerShipThreeA, "across", 9, 6);
+
+computerBoard.placeShip(computerShipFourA, "across", 3, 4);
+computerBoard.placeShip(computerShipFourB, "down", 7, 4);
+computerBoard.placeShip(computerShipThreeA, "down", 2, 3);
+
+console.log(human.takeShot(3, 4));
+console.log(human.takeShot(3, 4));
 
 
-const human = Player("Conor");
-console.log(human.pLayerName);
