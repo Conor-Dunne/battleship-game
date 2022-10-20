@@ -12,30 +12,188 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var GameboardFactory = function GameboardFactory() {
-  var placeShip = function placeShip(direction, length, x, y) {
+/* eslint-disable no-return-assign */
+var GameboardFactory = function GameboardFactory(name) {
+  var boardName = function boardName() {
+    return name;
+  };
+  var board = [];
+  var shipPositions = [];
+  var shipsArray = [];
+  var missedHits = [];
+  var takenSquares = [];
+  var receivedAttacksCoords = [];
+  var checkIfGameOver = function checkIfGameOver() {
+    return shipsArray.every(function (ship) {
+      return ship.sunkStatus() === true;
+    });
+  };
+  for (var i = 1; i < 11; i += 1) {
+    for (var j = 1; j < 11; j += 1) {
+      board.push([i, j]);
+    }
+  }
+
+  // PLace ship on board
+  var placeShip = function placeShip(ship, direction, x, y) {
     var coords = [[x, y]];
 
-    if (direction === "across") {
-      for (var i = 1; i < length; i += 1) {
-        coords.push([x, y + i]);
+    // Get coords for placing
+    for (var _i = 1; _i < ship.getLength(); _i += 1) {
+      if (direction === "across") {
+        coords.push([x, y + _i]);
+      } else coords.push([x + _i, y]);
+    }
+    // Check if outside board
+    if (coords[coords.length - 1][1] > 10) return "Please place ship inside grid";
+    coords = coords.map(function (arr) {
+      return arr.toString();
+    });
+
+    // Check if squares are taken
+    for (var _i2 = 0; _i2 < shipPositions.length; _i2 += 1) {
+      for (var _j = 0; _j < coords.length - 1; _j += 1) {
+        if (shipPositions[_i2].coords.includes(coords[_j])) {
+          return "Can't place ship here.";
+        }
       }
     }
-
-    if (coords[length - 1][1] > 10) return "Please place ship inside grid";
-    coords.forEach(function (arr) {
-      return arr.toString() === "3,2" ? coords = "Not here" : coords = coords;
+    shipsArray.push(ship);
+    // coords.forEach((arr) => shipPositions.push(arr.toString()));
+    shipPositions.push({
+      name: ship.getName(),
+      coords: coords
     });
-    console.log(coords);
+    coords.forEach(function (coord) {
+      return takenSquares.push(coord);
+    });
     return coords;
   };
 
+  // receive attack coords
+  var receiveAttack = function receiveAttack(x, y) {
+    var hitShip = "";
+    var indexToHit = "";
+    var hitPos = "";
+    if (receivedAttacksCoords.indexOf([x, y].toString()) > -1) {
+      return "Please select another square";
+    }
+    receivedAttacksCoords.push([x, y].toString());
+    if (takenSquares.indexOf([x, y].toString()) === -1) {
+      missedHits.push([x, y].toString());
+      return "Miss!";
+    }
+    shipPositions.forEach(function (obj) {
+      return obj.coords.includes([x, y].toString()) ? hitShip = obj : "Nashi";
+    });
+    hitPos = hitShip.coords.indexOf([x, y].toString());
+    shipsArray.forEach(function (obj) {
+      if (obj.getName() === hitShip.name) {
+        indexToHit = shipsArray.indexOf(obj);
+      }
+    });
+    shipsArray[indexToHit].hit(hitPos);
+    if (checkIfGameOver()) {
+      return "Game Over";
+    }
+    return "It's a hit!";
+  };
   return {
-    placeShip: placeShip
+    placeShip: placeShip,
+    receiveAttack: receiveAttack,
+    shipPositions: shipPositions,
+    shipsArray: shipsArray
   };
 };
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GameboardFactory);
+
+/***/ }),
+
+/***/ "./src/Factories/player.js":
+/*!*********************************!*\
+  !*** ./src/Factories/player.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+var Player = function Player(name, enemyBoard) {
+  var playerName = name;
+
+  // no of unplaced ships
+
+  // take a shot (random or manual)
+
+  var takeShot = function takeShot(x, y) {
+    return enemyBoard.receiveAttack(x, y);
+  };
+  return {
+    playerName: playerName,
+    takeShot: takeShot
+  };
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Player);
+
+/***/ }),
+
+/***/ "./src/Factories/ship.js":
+/*!*******************************!*\
+  !*** ./src/Factories/ship.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* eslint-disable no-plusplus */
+/* eslint-disable no-unused-vars */
+var ShipFactory = function ShipFactory(name, length) {
+  var health = length;
+  var sunk = false;
+  var hitMarks = [];
+  var isSunk = function isSunk() {
+    sunk = true;
+    console.log("Ship sunk");
+    return "Bye Bye";
+  };
+  var hit = function hit(location) {
+    hitMarks[location] = "X";
+    health -= 1;
+    if (health <= 0) {
+      return isSunk();
+    }
+    return "Ouch";
+  };
+  var sunkStatus = function sunkStatus() {
+    return sunk;
+  };
+  var getLength = function getLength() {
+    return length;
+  };
+  var getName = function getName() {
+    return name;
+  };
+  var getHealth = function getHealth() {
+    return health;
+  };
+  var setCoords = function setCoords(coords) {
+    return hitMarks.push(coords);
+  };
+  return {
+    hitMarks: hitMarks,
+    hit: hit,
+    getHealth: getHealth,
+    setCoords: setCoords,
+    getName: getName,
+    getLength: getLength,
+    sunkStatus: sunkStatus,
+    sunk: sunk
+  };
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ShipFactory);
 
 /***/ }),
 
@@ -58,7 +216,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "h1 {\n    color: blue;\n}\n\nbody {\n    background: pink;\n}\n\np {\n    color: red;\n}", "",{"version":3,"sources":["webpack://./src/styles.css"],"names":[],"mappings":"AAAA;IACI,WAAW;AACf;;AAEA;IACI,gBAAgB;AACpB;;AAEA;IACI,UAAU;AACd","sourcesContent":["h1 {\n    color: blue;\n}\n\nbody {\n    background: pink;\n}\n\np {\n    color: red;\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "h1 {\n    color: blue;\n}\n\nbody {\n    background: pink;\n}\n\n", "",{"version":3,"sources":["webpack://./src/styles.css"],"names":[],"mappings":"AAAA;IACI,WAAW;AACf;;AAEA;IACI,gBAAgB;AACpB","sourcesContent":["h1 {\n    color: blue;\n}\n\nbody {\n    background: pink;\n}\n\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -649,13 +807,41 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles.css */ "./src/styles.css");
 /* harmony import */ var _Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Factories/gameboard */ "./src/Factories/gameboard.js");
+/* harmony import */ var _Factories_ship__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Factories/ship */ "./src/Factories/ship.js");
+/* harmony import */ var _Factories_player__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Factories/player */ "./src/Factories/player.js");
 
 
-console.log("hi");
-var newBoard = (0,_Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__["default"])();
-newBoard.placeShip("across", 3, 4, 1);
+
+
+var playerboard = (0,_Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__["default"])("player");
+var computerBoard = (0,_Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__["default"])("computer");
+var playerShipFourA = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeFourA", 4);
+var playerShipFourB = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeFourB", 4);
+var playerShipThreeA = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeThreeA", 3);
+var computerShipFourA = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeFourA", 4);
+var computerShipFourB = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeFourB", 4);
+var computerShipThreeA = (0,_Factories_ship__WEBPACK_IMPORTED_MODULE_2__["default"])("SizeThreeA", 3);
+var human = (0,_Factories_player__WEBPACK_IMPORTED_MODULE_3__["default"])("Conor", computerBoard);
+var computer = (0,_Factories_player__WEBPACK_IMPORTED_MODULE_3__["default"])("computer", playerboard);
+playerboard.placeShip(playerShipFourA, "down", 2, 1);
+playerboard.placeShip(playerShipFourB, "across", 5, 5);
+playerboard.placeShip(playerShipThreeA, "across", 9, 6);
+computerBoard.placeShip(computerShipFourA, "across", 3, 4);
+computerBoard.placeShip(computerShipFourB, "down", 7, 4);
+computerBoard.placeShip(computerShipThreeA, "down", 2, 3);
+console.log(human.takeShot(3, 4));
+console.log(human.takeShot(3, 5));
+console.log(human.takeShot(3, 6));
+console.log(human.takeShot(3, 7));
+console.log(human.takeShot(7, 4));
+console.log(human.takeShot(8, 4));
+console.log(human.takeShot(9, 4));
+console.log(human.takeShot(10, 4));
+console.log(human.takeShot(2, 3));
+console.log(human.takeShot(3, 3));
+console.log(human.takeShot(4, 3));
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle153af0de2e3f208b5b59.js.map
+//# sourceMappingURL=bundle295865b8517f374fc843.js.map
