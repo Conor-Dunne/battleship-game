@@ -34,7 +34,11 @@ test("Will send hit coords to correct", () => {
   expect(testBoard.receiveAttack(4, 1)).toBe("It's a hit!");
 });
 
-test("Should have a total of two ships on the boar", () => {
+test("Doesn't allow same square to be attacked twice", () => {
+  expect(testBoard.receiveAttack(4, 1)).toBe("Please select another square");
+});
+
+test("Should have a total of two ships on the board", () => {
   expect(testBoard.shipsArray.length).toBe(2);
 });
 
@@ -50,3 +54,5 @@ test("Will report gameover if all ships are sunk", () => {
 test("Will log a missed hit on empty square", () => {
   expect(testBoard.receiveAttack(8, 3)).toBe("Miss!");
 });
+
+

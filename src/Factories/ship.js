@@ -7,6 +7,7 @@ const ShipFactory = (name, length) => {
 
   const isSunk = () => {
     sunk = true;
+    console.log("Ship sunk");
     return "Bye Bye";
   };
   const hit = (location) => {

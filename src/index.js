@@ -26,6 +26,16 @@ computerBoard.placeShip(computerShipFourB, "down", 7, 4);
 computerBoard.placeShip(computerShipThreeA, "down", 2, 3);
 
 console.log(human.takeShot(3, 4));
-console.log(human.takeShot(3, 4));
+console.log(human.takeShot(3, 5));
+console.log(human.takeShot(3, 6));
+console.log(human.takeShot(3, 7));
 
+console.log(human.takeShot(7, 4));
+console.log(human.takeShot(8, 4));
+console.log(human.takeShot(9, 4));
+console.log(human.takeShot(10, 4));
+
+console.log(human.takeShot(2, 3));
+console.log(human.takeShot(3, 3));
+console.log(human.takeShot(4, 3));
 
