@@ -54,5 +54,3 @@ test("Will report gameover if all ships are sunk", () => {
 test("Will log a missed hit on empty square", () => {
   expect(testBoard.receiveAttack(8, 3)).toBe("Miss!");
 });
-
-

@@ -41,3 +41,23 @@ console.log(human.takeShot(3, 3));
 console.log(human.takeShot(4, 3));
 
 renderBoard("player-board");
+renderBoard("computer-board");
+
+const domShip = function (x, y, length) {
+  const placePoint = document.querySelector(
+    `div#player-board > [data-coords = "${x},${y}"]`
+  );
+
+  const ship = document.createElement("div");
+  ship.classList.add("ship");
+
+  for (let i = 1; i <= length; i += 1) {
+    const oneSquare = document.createElement("div");
+    oneSquare.classList.add("ship-square");
+    ship.appendChild(oneSquare);
+  }
+
+  placePoint.appendChild(ship);
+};
+
+domShip(3,1, 4);

@@ -4,11 +4,13 @@ h1 {
 
 body {
     background: pink;
+    text-align: center;
 }
 
 .square {
-    height: 20px;
-    width: 20px;
+    display: flex;
+    height: 100%;
+    width: 100%;
     background: grey;
     border: 1px solid black;
 
@@ -16,5 +18,28 @@ body {
 
 .board {
     display: grid;
-    grid-template-columns: repeat(10, 20px);
+    grid-template-columns: repeat(10, 25px);
+    grid-template-rows: repeat(10, 25px);
+}
+
+.boards-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+.ship-square {
+    height: 23px;
+    width: 23px;
+    background: blue;
+    border: 1px solid black;
+}
+
+.ship {
+    display: flex;
+    flex-direction: column;
+    z-index: 0;
+    height: fit-content;
 }
