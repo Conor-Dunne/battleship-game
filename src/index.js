@@ -2,6 +2,7 @@ import "./styles.css";
 import GameboardFactory from "./Factories/gameboard";
 import ShipFactory from "./Factories/ship";
 import Player from "./Factories/player";
+import renderBoard from "./components/boards";
 
 const playerboard = GameboardFactory("player");
 const computerBoard = GameboardFactory("computer");
@@ -39,3 +40,4 @@ console.log(human.takeShot(2, 3));
 console.log(human.takeShot(3, 3));
 console.log(human.takeShot(4, 3));
 
+renderBoard("player-board");
