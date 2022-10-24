@@ -20,6 +20,7 @@ body {
     display: grid;
     grid-template-columns: repeat(10, 25px);
     grid-template-rows: repeat(10, 25px);
+    overflow: hidden;
 }
 
 .boards-wrapper {
@@ -30,11 +31,13 @@ body {
     gap: 50px;
 }
 
-.ship-square {
-    height: 23px;
+.ship-four {
+    height: 92px;
     width: 23px;
     background: blue;
     border: 1px solid black;
+    z-index: 0;
+
 }
 
 .ship {
