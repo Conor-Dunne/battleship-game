@@ -35,20 +35,34 @@ const domShip = function (el, length) {
   }, 100);
 };
 
-const highlight = function (el) {
-  el.classList.toggle("ship-four");
+const highlight = function (el, length) {
+  let data = el.dataset.coords;
+  data = data.split(",");
+  for (let i = 0; i < length; i += 1) {
+    const square = document.querySelector(
+      `[data-coords="${data[0]},${Number(data[1]) + i}"]`
+    );
+    square.classList.add("ship-four");
+  }
 };
 
-const unHighlight = function (el) {
-  el.classList.remove("ship-four");
+const unHighlight = function (el, length) {
+  let data = el.dataset.coords;
+  data = data.split(",");
+  for (let i = 0; i < length; i += 1) {
+    const square = document.querySelector(
+      `[data-coords="${data[0]},${Number(data[1]) + i}"]`
+    );
+    square.classList.remove("ship-four");
+  }
 };
 
 const playerSquares = document.querySelectorAll("#player-board > .square");
 
 playerSquares.forEach((el) =>
-  el.addEventListener("mouseover", () => highlight(el))
+  el.addEventListener("mouseover", () => highlight(el, 4))
 );
 
 playerSquares.forEach((el) =>
-  el.addEventListener("mouseout", () => unHighlight(el))
+  el.addEventListener("mouseout", () => unHighlight(el, 4))
 );
