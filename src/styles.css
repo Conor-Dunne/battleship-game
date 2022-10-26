@@ -46,3 +46,7 @@ body {
     z-index: 0;
     height: fit-content;
 }
+
+#axis {
+    margin: 20px;
+}
