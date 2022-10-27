@@ -46,3 +46,5 @@ playerSquares.forEach((el) =>
 playerSquares.forEach((el) =>
   el.addEventListener("mouseout", () => unHighlight(el, 4))
 );
+
+playerSquares.forEach((el) => el.addEventListener("click", placeShip));
