@@ -30,3 +30,5 @@ computerShips.push(
   compSub,
   compDestroyer
 );
+
+export default playerShips;

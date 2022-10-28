@@ -50,3 +50,11 @@ body {
 #axis {
     margin: 20px;
 }
+
+.placed-ship {
+    height: 23px;
+    width: 23px;
+    background: rgb(49, 231, 21);
+    border: 1px solid black;
+
+}

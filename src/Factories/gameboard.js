@@ -23,7 +23,7 @@ const GameboardFactory = (name) => {
 
     // Get coords for placing
     for (let i = 1; i < ship.getLength(); i += 1) {
-      if (direction === "across") {
+      if (direction === "X") {
         coords.push([x, y + i]);
       } else coords.push([x + i, y]);
     }
@@ -92,6 +92,7 @@ const GameboardFactory = (name) => {
     receiveAttack,
     shipPositions,
     shipsArray,
+    takenSquares,
   };
 };
 

@@ -4,40 +4,23 @@ import GameboardFactory from "./Factories/gameboard";
 import ShipFactory from "./Factories/ship";
 import Player from "./Factories/player";
 import renderBoard from "./components/boards";
-import { highlight, unHighlight } from "./DOMinteraction";
+import { highlight, unHighlight, displayShips } from "./DOMinteraction";
+import playerShips from "./helpers/ships";
 
 const playerboard = GameboardFactory("player");
 const computerBoard = GameboardFactory("computer");
+
+playerboard.placeShip(playerShips[0], "X", 3, 1);
+playerboard.placeShip(playerShips[1], "Y", 4, 1);
+
 
 
 renderBoard("player-board");
 renderBoard("computer-board");
 
-// const domShip = function (el, length) {
-//   const x = el.target.dataset.coords[0];
-//   const y = el.target.dataset.coords[2];
-//   console.log(y);
-//   const placePoint = document.querySelector(
-//     `div#player-board > [data-coords = "${x},${y}"]`
-//   );
+displayShips(playerboard.takenSquares);
 
-//   const ship = document.createElement("div");
-//   ship.classList.add("ship");
-
-//   for (let i = 1; i <= length; i += 1) {
-//     const oneSquare = document.createElement("div");
-//     oneSquare.classList.add("ship-square");
-//     ship.appendChild(oneSquare);
-//   }
-
-//   placePoint.appendChild(ship);
-
-//   setTimeout(() => {
-//     placePoint.removeChild(ship);
-//   }, 100);
-// };
 const playerSquares = document.querySelectorAll("#player-board > .square");
-
 
 playerSquares.forEach((el) =>
   el.addEventListener("mouseover", () => highlight(el, 4))
@@ -46,5 +29,3 @@ playerSquares.forEach((el) =>
 playerSquares.forEach((el) =>
   el.addEventListener("mouseout", () => unHighlight(el, 4))
 );
-
-playerSquares.forEach((el) => el.addEventListener("click", placeShip));

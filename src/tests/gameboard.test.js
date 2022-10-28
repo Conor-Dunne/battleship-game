@@ -8,7 +8,7 @@ const secondShip = ShipFactory("secondShip", 3);
 const testBoard = GameboardFactory();
 
 test("Will place a ship across on gameboard", () => {
-  expect(testBoard.placeShip(testShipForBoard, "across", 4, 1)).toEqual([
+  expect(testBoard.placeShip(testShipForBoard, "X", 4, 1)).toEqual([
     "4,1",
     "4,2",
     "4,3",
@@ -17,7 +17,7 @@ test("Will place a ship across on gameboard", () => {
 });
 
 test("Will place a ship down on gameboard", () => {
-  expect(testBoard.placeShip(secondShip, "down", 5, 1)).toEqual([
+  expect(testBoard.placeShip(secondShip, "Y", 5, 1)).toEqual([
     "5,1",
     "6,1",
     "7,1",
@@ -25,7 +25,7 @@ test("Will place a ship down on gameboard", () => {
 });
 
 test("Will not place ship on occupied square", () => {
-  expect(testBoard.placeShip(secondShip, "across", 4, 1)).toBe(
+  expect(testBoard.placeShip(secondShip, "X", 4, 1)).toBe(
     "Can't place ship here."
   );
 });
