@@ -60,3 +60,5 @@ export const displayShips = function (shipSquares) {
 };
 
 axisBtn.addEventListener("click", changeAxis);
+
+export { shipAxis };
