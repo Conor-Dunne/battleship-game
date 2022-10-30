@@ -26,7 +26,6 @@ export const unHighlight = function (el, length) {
   let data = el.dataset.coords;
   data = data.split(",");
   if (shipAxis === "X") {
-    console.log(shipAxis);
     for (let i = 0; i < length; i += 1) {
       const square = document.querySelector(
         `[data-coords="${data[0]},${Number(data[1]) + i}"]`
@@ -47,15 +46,12 @@ const changeAxis = function () {
   if (shipAxis === "Y") {
     shipAxis = "X";
   } else shipAxis = "Y";
-  console.log(shipAxis);
 };
 
 export const displayShips = function (shipSquares) {
-  console.log(shipSquares.length);
   for (let i = 0; i < shipSquares.length; i += 1) {
     const square = document.querySelector(`[data-coords="${shipSquares[i]}"]`);
     square.classList.add("placed-ship");
-    console.log(square);
   }
 };
 

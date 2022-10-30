@@ -7,6 +7,9 @@ const GameboardFactory = (name) => {
   const missedHits = [];
   const takenSquares = [];
   const receivedAttacksCoords = [];
+  let positionAvailable = true;
+
+  const getPositionAvailable = () => positionAvailable;
 
   const checkIfGameOver = () =>
     shipsArray.every((ship) => ship.sunkStatus() === true);
@@ -20,7 +23,7 @@ const GameboardFactory = (name) => {
   // PLace ship on board
   const placeShip = (ship, direction, x, y) => {
     let coords = [[x, y]];
-
+    positionAvailable = true;
     // Get coords for placing
     for (let i = 1; i < ship.getLength(); i += 1) {
       if (direction === "X") {
@@ -28,15 +31,22 @@ const GameboardFactory = (name) => {
       } else coords.push([x + i, y]);
     }
     // Check if outside board
-    if (coords[coords.length - 1][1] > 10)
+    if (
+      coords[coords.length - 1][1] > 10 ||
+      coords[coords.length - 1][0] > 10
+    ) {
+      positionAvailable = false;
       return "Please place ship inside grid";
+    }
 
     coords = coords.map((arr) => arr.toString());
 
     // Check if squares are taken
-    for (let i = 0; i < shipPositions.length; i += 1) {
+    for (let i = 0; i < takenSquares.length; i += 1) {
       for (let j = 0; j < coords.length - 1; j += 1) {
-        if (shipPositions[i].coords.includes(coords[j])) {
+        console.log(takenSquares);
+        if (takenSquares.includes(coords[j])) {
+          positionAvailable = false;
           return "Can't place ship here.";
         }
       }
@@ -93,6 +103,7 @@ const GameboardFactory = (name) => {
     shipPositions,
     shipsArray,
     takenSquares,
+    getPositionAvailable,
   };
 };
 
