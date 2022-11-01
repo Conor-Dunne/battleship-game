@@ -12,6 +12,7 @@ import {
 } from "./DOMinteraction";
 import playerShips from "./helpers/ships";
 import { addShip } from "./components/gameSetup";
+import { randomShipPlacement } from "./helpers/randomPlacement";
 
 const playerboard = GameboardFactory("player");
 const computerBoard = GameboardFactory("computer");
@@ -45,7 +46,6 @@ playerSquares.forEach((el) =>
       Number(data[0]),
       Number(data[1])
     );
-    console.log(playerboard.getPositionAvailable());
 
     if (playerboard.getPositionAvailable()) {
       i += 1;
@@ -53,3 +53,5 @@ playerSquares.forEach((el) =>
     }
   })
 );
+
+randomShipPlacement(playerboard, playerShips);
