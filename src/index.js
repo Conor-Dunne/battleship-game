@@ -5,6 +5,8 @@ import renderBoard from "./components/boards";
 import { gameSetup } from "./components/gameSetup";
 import { displayMessage } from "./DOMinteraction";
 import { hide, unhide } from "./helpers/functions";
+import { randomShipPlacement } from "./helpers/randomPlacement";
+import { computerShips } from "./helpers/ships";
 
 const playerboard = GameboardFactory("player");
 const computerBoard = GameboardFactory("computer");
@@ -17,6 +19,7 @@ renderBoard("computer-board");
 gameSetup(playerboard);
 
 const startGame = function () {
+  randomShipPlacement(computerBoard, computerShips);
   hide("setup-btns");
   unhide("computer");
   displayMessage("Player turn");

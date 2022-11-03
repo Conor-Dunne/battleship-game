@@ -6,7 +6,7 @@ import {
   displayShips,
   shipAxis,
 } from "../DOMinteraction";
-import playerShips from "../helpers/ships";
+import { playerShips } from "../helpers/ships";
 import { randomShipPlacement } from "../helpers/randomPlacement";
 
 export const gameSetup = (playerboard) => {
@@ -50,6 +50,7 @@ export const gameSetup = (playerboard) => {
     shipIndex = 0;
     playerboard.resetBoard();
     randomShipPlacement(playerboard, playerShips);
+    displayShips(playerboard.getTakenSquares());
     shipIndex = 5;
   });
 

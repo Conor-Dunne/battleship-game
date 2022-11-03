@@ -61,7 +61,7 @@ export const displayShips = function (shipSquares) {
 export const displayMessage = function (message) {
   const messageBox = document.getElementById("message-box");
   messageBox.textContent = message;
-}
+};
 
 axisBtn.addEventListener("click", changeAxis);
 
