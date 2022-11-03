@@ -4,6 +4,7 @@ export const randomNum = function (range) {
 };
 
 export const randomXorY = function () {
-    const arr = ["X", "Y"];
-    return arr[randomNum(2) - 1];
-}
+  const arr = ["X", "Y"];
+  return arr[randomNum(2) - 1];
+};
+

@@ -1,15 +1,17 @@
 /* eslint-disable no-return-assign */
 const GameboardFactory = (name) => {
   const boardName = () => name;
-  const board = [];
-  const shipPositions = [];
-  const shipsArray = [];
-  const missedHits = [];
-  const takenSquares = [];
-  const receivedAttacksCoords = [];
+  let board = [];
+  let shipPositions = [];
+  let shipsArray = [];
+  let missedHits = [];
+  let takenSquares = [];
+  let receivedAttacksCoords = [];
   let positionAvailable = true;
 
   const getPositionAvailable = () => positionAvailable;
+
+  const getTakenSquares = () => takenSquares;
 
   const checkIfGameOver = () =>
     shipsArray.every((ship) => ship.sunkStatus() === true);
@@ -44,7 +46,6 @@ const GameboardFactory = (name) => {
     // Check if squares are taken
     for (let i = 0; i < takenSquares.length; i += 1) {
       for (let j = 0; j < coords.length - 1; j += 1) {
-        console.log(takenSquares);
         if (takenSquares.includes(coords[j])) {
           positionAvailable = false;
           return "Can't place ship here.";
@@ -97,13 +98,24 @@ const GameboardFactory = (name) => {
     }
     return "It's a hit!";
   };
+
+  const resetBoard = () => {
+    shipPositions = [];
+    shipsArray = [];
+    missedHits = [];
+    takenSquares = [];
+    receivedAttacksCoords = [];
+    positionAvailable = true;
+  };
+
   return {
     placeShip,
     receiveAttack,
     shipPositions,
     shipsArray,
-    takenSquares,
+    getTakenSquares,
     getPositionAvailable,
+    resetBoard,
   };
 };
 
