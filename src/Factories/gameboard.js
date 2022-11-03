@@ -1,7 +1,7 @@
 /* eslint-disable no-return-assign */
 const GameboardFactory = (name) => {
   const boardName = () => name;
-  let board = [];
+  const board = [];
   let shipPositions = [];
   let shipsArray = [];
   let missedHits = [];

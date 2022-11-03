@@ -1,10 +1,32 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-size: 10px;
+}
+
 h1 {
+    font-size: 3rem;
     color: blue;
+}
+
+h3 {
+    font-size: 2rem;
 }
 
 body {
     background: pink;
     text-align: center;
+}
+
+#message-box {
+    font-size: 30px;
+    width: 70%;
+    margin: 0 auto;
+    border: 1px solid blue;
+    padding: 20px;
+    background: gray;
+    color: rgb(136, 231, 121);
 }
 
 .square {
@@ -28,7 +50,8 @@ body {
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
-    gap: 50px;
+    gap: 10px;
+    margin-top: 30px;
 }
 
 .ship-four {
@@ -47,8 +70,21 @@ body {
     height: fit-content;
 }
 
-#axis {
+button {
     margin: 20px;
+    min-width: 90px;
+}
+
+#setup-btns {
+    max-width: 300px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#start {
+    font-size: 20px;
+    padding: 10px;
 }
 
 .placed-ship {
@@ -57,4 +93,8 @@ body {
     background: rgb(49, 231, 21);
     border: 1px solid black;
 
+}
+
+.hide {
+    display: none !important;
 }
