@@ -2,7 +2,7 @@
 import "./styles.css";
 import GameboardFactory from "./Factories/gameboard";
 import renderBoard from "./components/boards";
-import { gameSetup } from "./components/gameSetup";
+import { gameSetup, allShipsPlaced } from "./components/gameSetup";
 import { displayMessage } from "./DOMinteraction";
 import { hide, unhide } from "./helpers/functions";
 import { randomShipPlacement } from "./helpers/randomPlacement";

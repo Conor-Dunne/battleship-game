@@ -8,11 +8,15 @@ import {
 } from "../DOMinteraction";
 import { playerShips } from "../helpers/ships";
 import { randomShipPlacement } from "../helpers/randomPlacement";
+import {hide, unhide} from "../helpers/functions";
+
+let shipIndex = 0;
+let allShipsPlaced = false;
+
+
 
 export const gameSetup = (playerboard) => {
   const playerSquares = document.querySelectorAll("#player-board > .square");
-
-  let shipIndex = 0;
 
   playerSquares.forEach((el) =>
     el.addEventListener("mouseover", () =>
@@ -41,6 +45,7 @@ export const gameSetup = (playerboard) => {
         shipIndex += 1;
         displayShips(playerboard.getTakenSquares());
       }
+      if (shipIndex === 5) unhide("start-btn");
     })
   );
 
@@ -52,6 +57,7 @@ export const gameSetup = (playerboard) => {
     randomShipPlacement(playerboard, playerShips);
     displayShips(playerboard.getTakenSquares());
     shipIndex = 5;
+    unhide("start-btn");
   });
 
   const resestBtn = document.getElementById("reset");
@@ -60,5 +66,6 @@ export const gameSetup = (playerboard) => {
     shipIndex = 0;
     playerboard.resetBoard();
     displayShips();
+    hide("start-btn")
   });
 };
