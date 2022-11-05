@@ -66,6 +66,6 @@ export const gameSetup = (playerboard) => {
     shipIndex = 0;
     playerboard.resetBoard();
     displayShips();
-    hide("start-btn")
+    hide("start-btn");
   });
 };

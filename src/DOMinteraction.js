@@ -49,13 +49,22 @@ const changeAxis = function () {
 };
 
 export const displayShips = function (shipSquares) {
-  console.log(shipSquares);
   const allSquares = document.querySelectorAll("#player-board > div");
   allSquares.forEach((div) => (div.className = "square"));
+  if (!shipSquares) return;
   for (let i = 0; i < shipSquares.length; i += 1) {
     const square = document.querySelector(`[data-coords="${shipSquares[i]}"]`);
     square.classList.add("placed-ship");
   }
+};
+
+export const attackHighlight = function (el) {
+  console.log(el.classList);
+  el.classList.add("ship-four");
+};
+
+export const attackUnhighlight = function (el) {
+  el.classList.remove("ship-four");
 };
 
 export const displayMessage = function (message) {
