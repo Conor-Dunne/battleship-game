@@ -13,6 +13,8 @@ const GameboardFactory = (name) => {
 
   const getTakenSquares = () => takenSquares;
 
+  const getreceivedAttacksCoords = () => receivedAttacksCoords;
+
   const checkIfGameOver = () =>
     shipsArray.every((ship) => ship.sunkStatus() === true);
 
@@ -70,6 +72,7 @@ const GameboardFactory = (name) => {
     let indexToHit = "";
     let hitPos = "";
     if (receivedAttacksCoords.indexOf([x, y].toString()) > -1) {
+      console.log("Please select another square");
       return "Please select another square";
     }
 
@@ -77,6 +80,7 @@ const GameboardFactory = (name) => {
 
     if (takenSquares.indexOf([x, y].toString()) === -1) {
       missedHits.push([x, y].toString());
+      console.log("Miss!");
       return "Miss!";
     }
 
@@ -94,8 +98,10 @@ const GameboardFactory = (name) => {
 
     shipsArray[indexToHit].hit(hitPos);
     if (checkIfGameOver()) {
+      console.log("Game over");
       return "Game Over";
     }
+    console.log("It's a hit!");
     return "It's a hit!";
   };
 
@@ -116,6 +122,7 @@ const GameboardFactory = (name) => {
     getTakenSquares,
     getPositionAvailable,
     resetBoard,
+    getreceivedAttacksCoords,
   };
 };
 

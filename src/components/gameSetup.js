@@ -8,12 +8,9 @@ import {
 } from "../DOMinteraction";
 import { playerShips } from "../helpers/ships";
 import { randomShipPlacement } from "../helpers/randomPlacement";
-import {hide, unhide} from "../helpers/functions";
+import { hide, unhide } from "../helpers/functions";
 
 let shipIndex = 0;
-let allShipsPlaced = false;
-
-
 
 export const gameSetup = (playerboard) => {
   const playerSquares = document.querySelectorAll("#player-board > .square");
@@ -65,6 +62,7 @@ export const gameSetup = (playerboard) => {
   resestBtn.addEventListener("click", () => {
     shipIndex = 0;
     playerboard.resetBoard();
+
     displayShips();
     hide("start-btn");
   });

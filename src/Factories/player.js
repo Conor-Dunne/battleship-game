@@ -1,11 +1,15 @@
 const Player = (name, enemyBoard) => {
-  const playerName = name;
-
   // no of unplaced ships
+  const playerName = name;
 
   // take a shot (random or manual)
 
-  const takeShot = (x, y) => enemyBoard.receiveAttack(x, y);
+  const takeShot = (el) => {
+    let data = el.dataset.coords;
+    data = data.split(",");
+
+    return enemyBoard.receiveAttack(Number(data[0]), Number(data[1]));
+  };
 
   return {
     playerName,

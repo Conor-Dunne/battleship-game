@@ -59,7 +59,6 @@ export const displayShips = function (shipSquares) {
 };
 
 export const attackHighlight = function (el) {
-  console.log(el.classList);
   el.classList.add("ship-four");
 };
 
@@ -70,6 +69,12 @@ export const attackUnhighlight = function (el) {
 export const displayMessage = function (message) {
   const messageBox = document.getElementById("message-box");
   messageBox.textContent = message;
+};
+
+export const displayAttack = function (el, result) {
+  console.log("result", result);
+  if (result === "Miss!") el.style.backgroundColor = "yellow";
+  if (result === "It's a hit!") el.style.backgroundColor = "red";
 };
 
 axisBtn.addEventListener("click", changeAxis);

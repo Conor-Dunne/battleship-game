@@ -16,6 +16,7 @@ const ShipFactory = (name, length) => {
     if (health <= 0) {
       return isSunk();
     }
+    console.log("It's a hit!");
     return "Ouch";
   };
 
