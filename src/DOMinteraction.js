@@ -73,8 +73,10 @@ export const displayMessage = function (message) {
 
 export const displayAttack = function (el, result) {
   console.log("result", result);
-  if (result === "Miss!") el.style.backgroundColor = "yellow";
-  if (result === "It's a hit!") el.style.backgroundColor = "red";
+  const square = el;
+  if (result === "Miss!") square.style.backgroundColor = "yellow";
+  if (result === "It's a hit!" || result === "Game Over")
+    square.style.backgroundColor = "red";
 };
 
 axisBtn.addEventListener("click", changeAxis);

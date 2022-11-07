@@ -1,13 +1,15 @@
 /* eslint-disable no-return-assign */
 const GameboardFactory = (name) => {
   const boardName = () => name;
-  const board = [];
+  const unHitSquares = [];
   let shipPositions = [];
   let shipsArray = [];
   let missedHits = [];
   let takenSquares = [];
   let receivedAttacksCoords = [];
   let positionAvailable = true;
+
+  const getUnHitSquares = () => unHitSquares;
 
   const getPositionAvailable = () => positionAvailable;
 
@@ -20,7 +22,7 @@ const GameboardFactory = (name) => {
 
   for (let i = 1; i < 11; i += 1) {
     for (let j = 1; j < 11; j += 1) {
-      board.push([i, j]);
+      unHitSquares.push([i, j].toString());
     }
   }
 
@@ -77,10 +79,14 @@ const GameboardFactory = (name) => {
     }
 
     receivedAttacksCoords.push([x, y].toString());
+    let indexInBoard = unHitSquares.indexOf([x, y].toString());
 
     if (takenSquares.indexOf([x, y].toString()) === -1) {
       missedHits.push([x, y].toString());
       console.log("Miss!");
+
+      unHitSquares.splice(indexInBoard, 1);
+      console.log([x, y].toString());
       return "Miss!";
     }
 
@@ -102,6 +108,8 @@ const GameboardFactory = (name) => {
       return "Game Over";
     }
     console.log("It's a hit!");
+    console.log([x, y].toString());
+    unHitSquares.splice(indexInBoard, 1);
     return "It's a hit!";
   };
 
@@ -123,6 +131,7 @@ const GameboardFactory = (name) => {
     getPositionAvailable,
     resetBoard,
     getreceivedAttacksCoords,
+    getUnHitSquares,
   };
 };
 

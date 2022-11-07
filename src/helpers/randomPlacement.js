@@ -16,5 +16,5 @@ export const randomShipPlacement = function (board, ships) {
       currentShip += 1;
     }
   }
-  // displayShips(board.getTakenSquares());
 };
+
