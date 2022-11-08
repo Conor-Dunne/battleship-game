@@ -18,3 +18,9 @@ export const unhide = function (elementId) {
   const elementToUnHide = document.getElementById(elementId);
   elementToUnHide.classList.remove("hide");
 };
+
+export const getRandomUnhitSquare = function (board) {
+  const squaresToHit = enemyBoard.getUnHitSquares();
+  const attackSquare = squaresToHit[randomNum(squaresToHit.length - 1)]
+  console.log(attackSquare);
+};

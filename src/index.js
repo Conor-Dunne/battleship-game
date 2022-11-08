@@ -9,7 +9,7 @@ import {
   attackUnhighlight,
   displayAttack,
 } from "./DOMinteraction";
-import { hide, unhide } from "./helpers/functions";
+import { hide, unhide, getRandomUnhitSquare } from "./helpers/functions";
 import { randomShipPlacement } from "./helpers/randomPlacement";
 import { computerShips } from "./helpers/ships";
 import Player from "./Factories/player";
@@ -47,7 +47,7 @@ const startGame = function () {
     el.addEventListener("click", () => {
       const result = human.takeShot(el);
       displayAttack(el, result);
-      let compResult = computer.randomShot();
+      const compResult = computer.randomShot();
       console.log("comp", compResult);
     })
   );

@@ -1,5 +1,5 @@
 import { randomXorY, randomNum } from "../helpers/functions";
-
+import { displayAttack } from "../DOMinteraction";
 const Player = (name, enemyBoard) => {
   // no of unplaced ships
   const playerName = name;
@@ -9,14 +9,19 @@ const Player = (name, enemyBoard) => {
   const randomShot = function () {
     const squaresToHit = enemyBoard.getUnHitSquares();
     let attackSquare = squaresToHit[randomNum(squaresToHit.length - 1)];
+    const playerSquareEl = document.querySelector(
+      `#player-board > [data-coords="${attackSquare}"]`
+    );
+    console.log(playerSquareEl);
     attackSquare = attackSquare.split(",");
     console.log("this", attackSquare);
     console.log(squaresToHit);
-    return enemyBoard.receiveAttack(
+    const result = enemyBoard.receiveAttack(
       Number(attackSquare[0]),
       Number(attackSquare[1])
     );
-    
+
+    displayAttack(playerSquareEl, result);
   };
 
   const takeShot = (el) => {
