@@ -8,12 +8,13 @@ const Player = (name, enemyBoard) => {
 
   const randomShot = function () {
     const squaresToHit = enemyBoard.getUnHitSquares();
-    const attackSquare = squaresToHit[randomNum(squaresToHit.length - 1)];
+    let attackSquare = squaresToHit[randomNum(squaresToHit.length - 1)];
+    attackSquare = attackSquare.split(",");
     console.log("this", attackSquare);
     console.log(squaresToHit);
     return enemyBoard.receiveAttack(
       Number(attackSquare[0]),
-      Number(attackSquare[2])
+      Number(attackSquare[1])
     );
     
   };
