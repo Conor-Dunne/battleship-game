@@ -6,7 +6,7 @@ body {
 }
 
 h1 {
-    font-size: 3rem;
+    font-size: 2rem;
     color: blue;
 }
 
@@ -20,11 +20,11 @@ body {
 }
 
 #message-box {
-    font-size: 30px;
+    font-size: 1.5rem;
     width: 70%;
     margin: 0 auto;
     border: 1px solid blue;
-    padding: 20px;
+    padding: 10px;
     background: gray;
     color: rgb(136, 231, 121);
 }
@@ -40,8 +40,8 @@ body {
 
 .board {
     display: grid;
-    grid-template-columns: repeat(10, 25px);
-    grid-template-rows: repeat(10, 25px);
+    grid-template-columns: repeat(10, 20px);
+    grid-template-rows: repeat(10, 20px);
     overflow: hidden;
 }
 
