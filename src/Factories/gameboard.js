@@ -1,9 +1,8 @@
 /* eslint-disable no-return-assign */
 import { displayMessage } from "../DOMinteraction";
-import { handleMessage } from "../helpers/functions";
 
-const GameboardFactory = (name) => {
-  const boardName = () => name;
+const GameboardFactory = (name, opponent) => {
+  const PlayerName = name;
   const unHitSquares = [];
   let shipPositions = [];
   let shipsArray = [];
@@ -11,7 +10,6 @@ const GameboardFactory = (name) => {
   let takenSquares = [];
   let receivedAttacksCoords = [];
   let positionAvailable = true;
-  let message = "";
 
   const getUnHitSquares = () => unHitSquares;
 
@@ -46,8 +44,8 @@ const GameboardFactory = (name) => {
       coords[coords.length - 1][0] > 10
     ) {
       positionAvailable = false;
-      message = "Please place ship inside grid";
-      return handleMessage(message);
+      displayMessage("Please place ship inside grid");
+      return;
     }
 
     coords = coords.map((arr) => arr.toString());
@@ -57,8 +55,8 @@ const GameboardFactory = (name) => {
       for (let j = 0; j < coords.length - 1; j += 1) {
         if (takenSquares.includes(coords[j])) {
           positionAvailable = false;
-          message = "Can't place ship here.";
-          return handleMessage(message);
+          displayMessage("Can't place ship here.");
+          return;
         }
       }
     }
@@ -80,21 +78,19 @@ const GameboardFactory = (name) => {
     let indexToHit = "";
     let hitPos = "";
     if (receivedAttacksCoords.indexOf([x, y].toString()) > -1) {
-      message = "Please select another square";
-      return handleMessage(message);
+      displayMessage("Please select another square");
+      return;
     }
 
     receivedAttacksCoords.push([x, y].toString());
-    let indexInBoard = unHitSquares.indexOf([x, y].toString());
+    const indexInBoard = unHitSquares.indexOf([x, y].toString());
 
     if (takenSquares.indexOf([x, y].toString()) === -1) {
       missedHits.push([x, y].toString());
-      console.log("Miss!");
-
       unHitSquares.splice(indexInBoard, 1);
       console.log([x, y].toString());
-      message = "Miss!";
-      return handleMessage(message);
+      displayMessage(`${opponent} miss!`);
+      return false;
     }
 
     shipPositions.forEach((obj) =>
@@ -111,15 +107,12 @@ const GameboardFactory = (name) => {
 
     shipsArray[indexToHit].hit(hitPos);
     if (checkIfGameOver()) {
-      console.log("Game over");
-      message = "Game Over";
-      return handleMessage(message);
+      displayMessage(`Game over! ${opponent} wins!`);
+      return "Game Over";
     }
-    console.log("It's a hit!");
-    console.log([x, y].toString());
     unHitSquares.splice(indexInBoard, 1);
-    message = "It's a hit!";
-    return handleMessage(message);
+    displayMessage(`Hit for ${opponent}`);
+    return true;
   };
 
   const resetBoard = () => {

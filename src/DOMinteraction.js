@@ -72,10 +72,9 @@ export const displayMessage = function (message) {
 };
 
 export const displayAttack = function (el, result) {
-  console.log("result", result);
   const square = el;
-  if (result === "Miss!") square.style.backgroundColor = "yellow";
-  if (result === "It's a hit!" || result === "Game Over")
+  if (result === false) square.style.backgroundColor = "yellow";
+  if (result === true || result === "Game Over")
     square.style.backgroundColor = "red";
 };
 

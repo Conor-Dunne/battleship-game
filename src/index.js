@@ -14,8 +14,9 @@ import { randomShipPlacement } from "./helpers/randomPlacement";
 import { computerShips } from "./helpers/ships";
 import Player from "./Factories/player";
 
-const playerboard = GameboardFactory("player");
-const computerBoard = GameboardFactory("computer");
+const playerboard = GameboardFactory("player", "Computer");
+const computerBoard = GameboardFactory("computer", "Player");
+
 const human = new Player("Player", computerBoard);
 const computer = new Player("Computer", playerboard);
 
@@ -28,8 +29,6 @@ gameSetup(playerboard);
 
 const compSquares = document.querySelectorAll("#computer-board > .square");
 const playerSquares = document.querySelectorAll("#player-board > .square");
-
-console.log(playerSquares[3].dataset.coords);
 
 const startGame = function () {
   randomShipPlacement(computerBoard, computerShips);
@@ -49,7 +48,7 @@ const startGame = function () {
       displayAttack(el, result);
       setTimeout(() => {
         computer.randomShot();
-      }, 0.5 * 1000);
+      }, 1.5 * 1000);
     })
   );
 };
