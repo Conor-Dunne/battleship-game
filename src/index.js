@@ -47,7 +47,9 @@ const startGame = function () {
     el.addEventListener("click", () => {
       const result = human.takeShot(el);
       displayAttack(el, result);
-      computer.randomShot();
+      setTimeout(() => {
+        computer.randomShot();
+      }, 0.5 * 1000);
     })
   );
 };
