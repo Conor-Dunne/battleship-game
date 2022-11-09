@@ -47,11 +47,9 @@ const startGame = function () {
     el.addEventListener("click", () => {
       const result = human.takeShot(el);
       displayAttack(el, result);
-      const compResult = computer.randomShot();
-      console.log("comp", compResult);
+      computer.randomShot();
     })
   );
-  console.log(computerBoard.getTakenSquares());
 };
 
 const startGameBtn = document.getElementById("start");

@@ -1,4 +1,7 @@
 /* eslint-disable no-undef */
+
+import { displayMessage } from "../DOMinteraction";
+
 /* eslint-disable import/prefer-default-export */
 export const randomNum = function (range) {
   return Math.floor(Math.random() * range) + 1;
@@ -23,4 +26,9 @@ export const getRandomUnhitSquare = function (board) {
   const squaresToHit = enemyBoard.getUnHitSquares();
   const attackSquare = squaresToHit[randomNum(squaresToHit.length - 1)]
   console.log(attackSquare);
+};
+
+export const handleMessage = function (message) {
+  displayMessage(message);
+  return message;
 };
