@@ -88,7 +88,6 @@ const GameboardFactory = (name, opponent) => {
     if (takenSquares.indexOf([x, y].toString()) === -1) {
       missedHits.push([x, y].toString());
       unHitSquares.splice(indexInBoard, 1);
-      console.log([x, y].toString());
       displayMessage(`${opponent} miss!`);
       return false;
     }

@@ -42,11 +42,21 @@ const startGame = function () {
   compSquares.forEach((el) =>
     el.addEventListener("mouseout", () => attackUnhighlight(el))
   );
+
+  let result;
+
   compSquares.forEach((el) =>
     el.addEventListener("click", () => {
-      const result = human.takeShot(el);
+      console.log(result);
+      if (result === "Game Over") {
+        return;
+      }
+      result = human.takeShot(el);
       displayAttack(el, result);
-      setTimeout(() => {
+      if (result === "Game Over") {
+        return;
+      }
+      result = setTimeout(() => {
         computer.randomShot();
       }, 1.5 * 1000);
     })
