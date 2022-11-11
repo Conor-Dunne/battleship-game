@@ -13,6 +13,7 @@ import { hide, unhide, getRandomUnhitSquare } from "./helpers/functions";
 import { randomShipPlacement } from "./helpers/randomPlacement";
 import { computerShips } from "./helpers/ships";
 import Player from "./Factories/player";
+import { restartGame } from "./components/gameControls";
 
 const playerboard = GameboardFactory("player", "Computer");
 const computerBoard = GameboardFactory("computer", "Player");
@@ -36,6 +37,7 @@ const startGame = function () {
   unhide("computer");
   displayMessage("Player turn");
   hide("start-btn");
+  hide("replay-btn");
   compSquares.forEach((el) =>
     el.addEventListener("mouseover", () => attackHighlight(el))
   );
@@ -49,11 +51,13 @@ const startGame = function () {
     el.addEventListener("click", () => {
       console.log(result);
       if (result === "Game Over") {
+        unhide("replay-btn");
         return;
       }
       result = human.takeShot(el);
       displayAttack(el, result);
       if (result === "Game Over") {
+        unhide("replay-btn");
         return;
       }
       result = setTimeout(() => {
@@ -64,5 +68,9 @@ const startGame = function () {
 };
 
 const startGameBtn = document.getElementById("start");
+const replayBtn = document.getElementById("replay");
 
 startGameBtn.addEventListener("click", startGame);
+replayBtn.addEventListener("click", () =>
+  restartGame(playerboard, computerBoard)
+);

@@ -78,6 +78,15 @@ export const displayAttack = function (el, result) {
     square.style.backgroundColor = "red";
 };
 
+export const resestBoardDisplay = function () {
+  const allPlayerSquares = document.querySelectorAll("#player-board > div");
+  const allCompSquares = document.querySelectorAll("#computer-board > div");
+
+  allPlayerSquares.forEach((div) => (div.style.backgroundColor = "grey"));
+  allCompSquares.forEach((div) => (div.style.backgroundColor = "grey"));
+  hide("replay-btn");
+};
+
 axisBtn.addEventListener("click", changeAxis);
 
 export { shipAxis };
