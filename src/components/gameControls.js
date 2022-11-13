@@ -8,5 +8,6 @@ export const restartGame = (boardOne, boardTwo) => {
   unhide("setup-btns");
   hide("computer");
   hide("start-btn");
+  hide("replay-btn");
   resestBoardDisplay();
 };

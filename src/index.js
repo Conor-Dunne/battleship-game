@@ -49,7 +49,6 @@ const startGame = function () {
 
   compSquares.forEach((el) =>
     el.addEventListener("click", () => {
-      console.log(result);
       if (result === "Game Over") {
         unhide("replay-btn");
         return;

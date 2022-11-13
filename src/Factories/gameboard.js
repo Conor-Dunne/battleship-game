@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 /* eslint-disable no-return-assign */
 import { displayMessage } from "../DOMinteraction";
 
@@ -49,10 +50,10 @@ const GameboardFactory = (name, opponent) => {
     }
 
     coords = coords.map((arr) => arr.toString());
-
+    console.log(PlayerName, coords, takenSquares);
     // Check if squares are taken
     for (let i = 0; i < takenSquares.length; i += 1) {
-      for (let j = 0; j < coords.length - 1; j += 1) {
+      for (let j = 0; j < coords.length; j += 1) {
         if (takenSquares.includes(coords[j])) {
           positionAvailable = false;
           displayMessage("Can't place ship here.");
@@ -88,6 +89,7 @@ const GameboardFactory = (name, opponent) => {
     if (takenSquares.indexOf([x, y].toString()) === -1) {
       missedHits.push([x, y].toString());
       unHitSquares.splice(indexInBoard, 1);
+      console.log([x, y].toString());
       displayMessage(`${opponent} miss!`);
       return false;
     }
@@ -122,7 +124,6 @@ const GameboardFactory = (name, opponent) => {
     receivedAttacksCoords = [];
     positionAvailable = true;
   };
-
   return {
     placeShip,
     receiveAttack,
