@@ -4,7 +4,7 @@ import { displayMessage } from "../DOMinteraction";
 
 const GameboardFactory = (name, opponent) => {
   const PlayerName = name;
-  const unHitSquares = [];
+  let unHitSquares = [];
   let shipPositions = [];
   let shipsArray = [];
   let missedHits = [];
@@ -115,6 +115,12 @@ const GameboardFactory = (name, opponent) => {
   };
 
   const resetBoard = () => {
+    unHitSquares = [];
+    for (let i = 1; i < 11; i += 1) {
+      for (let j = 1; j < 11; j += 1) {
+        unHitSquares.push([i, j].toString());
+      }
+    }
     shipPositions = [];
     shipsArray = [];
     missedHits = [];

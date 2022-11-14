@@ -1,4 +1,6 @@
+/* eslint-disable import/no-mutable-exports */
 /* eslint-disable no-undef */
+
 let shipAxis = "Y";
 const axisBtn = document.getElementById("axis");
 

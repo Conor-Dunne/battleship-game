@@ -1,3 +1,4 @@
+/* eslint-disable no-import-assign */
 /* eslint-disable import/prefer-default-export */
 import { hide, unhide } from "../helpers/functions";
 import { resestBoardDisplay } from "../DOMinteraction";

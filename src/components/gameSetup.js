@@ -1,3 +1,6 @@
+/* eslint-disable import/no-cycle */
+/* eslint-disable no-return-assign */
+/* eslint-disable import/no-mutable-exports */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable no-undef */
 import {
@@ -58,6 +61,7 @@ export const gameSetup = (playerboard) => {
   });
 
   const resestBtn = document.getElementById("reset");
+  const replayBtn = document.getElementById("replay");
 
   resestBtn.addEventListener("click", () => {
     shipIndex = 0;
@@ -65,4 +69,6 @@ export const gameSetup = (playerboard) => {
     displayShips();
     hide("start-btn");
   });
+
+  replayBtn.addEventListener("click", () => (shipIndex = 0));
 };
