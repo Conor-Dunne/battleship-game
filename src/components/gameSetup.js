@@ -62,7 +62,6 @@ export const gameSetup = (playerboard) => {
   resestBtn.addEventListener("click", () => {
     shipIndex = 0;
     playerboard.resetBoard();
-
     displayShips();
     hide("start-btn");
   });

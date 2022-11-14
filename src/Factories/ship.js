@@ -3,7 +3,7 @@
 const ShipFactory = (name, length) => {
   let health = length;
   let sunk = false;
-  const hitMarks = [];
+  let hitMarks = [];
 
   const isSunk = () => {
     sunk = true;
@@ -30,6 +30,12 @@ const ShipFactory = (name, length) => {
 
   const setCoords = (coords) => hitMarks.push(coords);
 
+  const reset = () => {
+    sunk = false;
+    health = length;
+    hitMarks = [];
+  }
+
   return {
     hitMarks,
     hit,
@@ -38,6 +44,7 @@ const ShipFactory = (name, length) => {
     getName,
     getLength,
     sunkStatus,
+    reset,
     sunk,
   };
 };

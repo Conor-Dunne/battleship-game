@@ -50,7 +50,6 @@ const GameboardFactory = (name, opponent) => {
     }
 
     coords = coords.map((arr) => arr.toString());
-    console.log(PlayerName, coords, takenSquares);
     // Check if squares are taken
     for (let i = 0; i < takenSquares.length; i += 1) {
       for (let j = 0; j < coords.length; j += 1) {
@@ -89,7 +88,6 @@ const GameboardFactory = (name, opponent) => {
     if (takenSquares.indexOf([x, y].toString()) === -1) {
       missedHits.push([x, y].toString());
       unHitSquares.splice(indexInBoard, 1);
-      console.log([x, y].toString());
       displayMessage(`${opponent} miss!`);
       return false;
     }

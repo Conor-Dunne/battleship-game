@@ -31,4 +31,9 @@ computerShips.push(
   compDestroyer
 );
 
+export const resetAllShips = () => {
+  playerShips.forEach(ship => ship.reset());
+  computerShips.forEach(ship => ship.reset());
+};
+
 export { playerShips, computerShips };

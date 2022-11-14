@@ -73,18 +73,16 @@ export const displayMessage = function (message) {
 
 export const displayAttack = function (el, result) {
   const square = el;
-  if (result === false) square.style.backgroundColor = "yellow";
-  if (result === true || result === "Game Over")
-    square.style.backgroundColor = "red";
+  if (result === false) square.classList = "miss";
+  if (result === true || result === "Game Over") square.classList = "hit";
 };
 
 export const resestBoardDisplay = function () {
   const allPlayerSquares = document.querySelectorAll("#player-board > div");
   const allCompSquares = document.querySelectorAll("#computer-board > div");
 
-  allPlayerSquares.forEach((div) => (div.style.backgroundColor = "grey"));
-  allCompSquares.forEach((div) => (div.style.backgroundColor = "grey"));
-  hide("replay-btn");
+  allPlayerSquares.forEach((div) => (div.classList = "square"));
+  allCompSquares.forEach((div) => (div.classList = "square"));
 };
 
 axisBtn.addEventListener("click", changeAxis);
