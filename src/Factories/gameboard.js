@@ -74,10 +74,12 @@ const GameboardFactory = (name, opponent) => {
 
   // receive attack coords
   const receiveAttack = (x, y) => {
+    console.log(receivedAttacksCoords);
     let hitShip = "";
     let indexToHit = "";
     let hitPos = "";
     if (receivedAttacksCoords.indexOf([x, y].toString()) > -1) {
+      console.log([x, y], receivedAttacksCoords);
       displayMessage("Please select another square");
       return;
     }
@@ -127,6 +129,7 @@ const GameboardFactory = (name, opponent) => {
     takenSquares = [];
     receivedAttacksCoords = [];
     positionAvailable = true;
+    console.log(shipPositions, shipsArray, missedHits, takenSquares, receivedAttacksCoords)
   };
   return {
     placeShip,

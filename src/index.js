@@ -31,7 +31,11 @@ gameSetup(playerboard);
 const compSquares = document.querySelectorAll("#computer-board > .square");
 const playerSquares = document.querySelectorAll("#player-board > .square");
 
+let result;
+let gameOver = false;
+
 const startGame = function () {
+  gameOver = false;
   randomShipPlacement(computerBoard, computerShips);
   hide("setup-btns");
   unhide("computer");
@@ -45,23 +49,27 @@ const startGame = function () {
     el.addEventListener("mouseout", () => attackUnhighlight(el))
   );
 
-  let result;
-
   compSquares.forEach((el) =>
     el.addEventListener("click", () => {
-      if (result === "Game Over") {
+      if (gameOver === true) {
         unhide("replay-btn");
         return;
       }
       result = human.takeShot(el);
       displayAttack(el, result);
-      if (result === "Game Over") {
+      console.log("human", result);
+      if (result === "Game Over") gameOver = true;
+      if (gameOver === true) {
         unhide("replay-btn");
         return;
       }
       result = setTimeout(() => {
         computer.randomShot();
       }, 1.5 * 1000);
+      console.log("comp", result);
+
+      if (result === "Game Over") gameOver = true;
+      console.log("Game Over", gameOver);
     })
   );
 };
