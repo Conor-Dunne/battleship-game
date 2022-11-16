@@ -1,0 +1,57 @@
+[1mdiff --git a/src/Factories/gameboard.js b/src/Factories/gameboard.js[m
+[1mindex 9d96c16..1eea59f 100644[m
+[1m--- a/src/Factories/gameboard.js[m
+[1m+++ b/src/Factories/gameboard.js[m
+[36m@@ -129,7 +129,7 @@[m [mconst GameboardFactory = (name, opponent) => {[m
+     takenSquares = [];[m
+     receivedAttacksCoords = [];[m
+     positionAvailable = true;[m
+[31m-    console.log(shipPositions, shipsArray, missedHits, takenSquares, receivedAttacksCoords)[m
+[32m+[m[32m    console.log("reset!");[m
+   };[m
+   return {[m
+     placeShip,[m
+[1mdiff --git a/src/components/gameControls.js b/src/components/gameControls.js[m
+[1mindex 7ca19cf..ce5c4b4 100644[m
+[1m--- a/src/components/gameControls.js[m
+[1m+++ b/src/components/gameControls.js[m
+[36m@@ -4,9 +4,9 @@[m [mimport { hide, unhide } from "../helpers/functions";[m
+ import { resestBoardDisplay } from "../DOMinteraction";[m
+ import { resetAllShips } from "../helpers/ships";[m
+ [m
+[31m-export const restartGame = (boardOne, boardTwo) => {[m
+[31m-  boardOne.resetBoard();[m
+[31m-  boardTwo.resetBoard();[m
+[32m+[m[32mexport const restartGame = () => {[m
+[32m+[m[32m  // boardOne.resetBoard();[m
+[32m+[m[32m  // boardTwo.resetBoard();[m
+   unhide("setup-btns");[m
+   hide("computer");[m
+   hide("start-btn");[m
+[1mdiff --git a/src/index.js b/src/index.js[m
+[1mindex de70373..42d17c3 100644[m
+[1m--- a/src/index.js[m
+[1m+++ b/src/index.js[m
+[36m@@ -15,8 +15,8 @@[m [mimport { computerShips } from "./helpers/ships";[m
+ import Player from "./Factories/player";[m
+ import { restartGame } from "./components/gameControls";[m
+ [m
+[31m-const playerboard = GameboardFactory("player", "Computer");[m
+[31m-const computerBoard = GameboardFactory("computer", "Player");[m
+[32m+[m[32mlet playerboard = new GameboardFactory("player", "Computer");[m
+[32m+[m[32mlet computerBoard = new GameboardFactory("computer", "Player");[m
+ [m
+ const human = new Player("Player", computerBoard);[m
+ const computer = new Player("Computer", playerboard);[m
+[36m@@ -78,6 +78,8 @@[m [mconst startGameBtn = document.getElementById("start");[m
+ const replayBtn = document.getElementById("replay");[m
+ [m
+ startGameBtn.addEventListener("click", startGame);[m
+[31m-replayBtn.addEventListener("click", () =>[m
+[31m-  restartGame(playerboard, computerBoard)[m
+[31m-);[m
+[32m+[m[32mreplayBtn.addEventListener("click", () => {[m
+[32m+[m[32m  playerboard.resetBoard();[m
+[32m+[m[32m  computerBoard.resetBoard();[m
+[32m+[m[32m  restartGame();[m
+[32m+[m[32m});[m

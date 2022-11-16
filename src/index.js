@@ -15,8 +15,8 @@ import { computerShips } from "./helpers/ships";
 import Player from "./Factories/player";
 import { restartGame } from "./components/gameControls";
 
-const playerboard = GameboardFactory("player", "Computer");
-const computerBoard = GameboardFactory("computer", "Player");
+let playerboard = new GameboardFactory("player", "Computer");
+let computerBoard = new GameboardFactory("computer", "Player");
 
 const human = new Player("Player", computerBoard);
 const computer = new Player("Computer", playerboard);
@@ -78,6 +78,8 @@ const startGameBtn = document.getElementById("start");
 const replayBtn = document.getElementById("replay");
 
 startGameBtn.addEventListener("click", startGame);
-replayBtn.addEventListener("click", () =>
-  restartGame(playerboard, computerBoard)
-);
+replayBtn.addEventListener("click", () => {
+  playerboard.resetBoard();
+  computerBoard.resetBoard();
+  restartGame();
+});

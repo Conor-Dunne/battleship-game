@@ -129,7 +129,7 @@ const GameboardFactory = (name, opponent) => {
     takenSquares = [];
     receivedAttacksCoords = [];
     positionAvailable = true;
-    console.log(shipPositions, shipsArray, missedHits, takenSquares, receivedAttacksCoords)
+    console.log("reset!");
   };
   return {
     placeShip,
