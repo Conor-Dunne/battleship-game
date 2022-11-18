@@ -33,6 +33,7 @@ const playerSquares = document.querySelectorAll("#player-board > .square");
 
 let result;
 let gameOver = false;
+let firstRound = true;
 
 const startGame = function () {
   gameOver = false;
@@ -49,6 +50,7 @@ const startGame = function () {
     el.addEventListener("mouseout", () => attackUnhighlight(el))
   );
 
+  if (firstRound === true) {
   compSquares.forEach((el) =>
     el.addEventListener("click", () => {
       if (gameOver === true) {
@@ -57,7 +59,6 @@ const startGame = function () {
       }
       result = human.takeShot(el);
       displayAttack(el, result);
-      console.log("human", result);
       if (result === "Game Over") gameOver = true;
       if (gameOver === true) {
         unhide("replay-btn");
@@ -66,12 +67,11 @@ const startGame = function () {
       result = setTimeout(() => {
         computer.randomShot();
       }, 1.5 * 1000);
-      console.log("comp", result);
-
       if (result === "Game Over") gameOver = true;
-      console.log("Game Over", gameOver);
+      firstRound = false;
     })
   );
+  }
 };
 
 const startGameBtn = document.getElementById("start");

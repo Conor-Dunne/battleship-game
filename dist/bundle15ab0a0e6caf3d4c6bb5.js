@@ -10,15 +10,21 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "attackHighlight": () => (/* binding */ attackHighlight),
+/* harmony export */   "attackUnhighlight": () => (/* binding */ attackUnhighlight),
+/* harmony export */   "displayAttack": () => (/* binding */ displayAttack),
+/* harmony export */   "displayMessage": () => (/* binding */ displayMessage),
 /* harmony export */   "displayShips": () => (/* binding */ displayShips),
 /* harmony export */   "highlight": () => (/* binding */ highlight),
-/* harmony export */   "playerSquares": () => (/* binding */ playerSquares),
+/* harmony export */   "resestBoardDisplay": () => (/* binding */ resestBoardDisplay),
+/* harmony export */   "shipAxis": () => (/* binding */ shipAxis),
 /* harmony export */   "unHighlight": () => (/* binding */ unHighlight)
 /* harmony export */ });
+/* eslint-disable import/no-mutable-exports */
 /* eslint-disable no-undef */
+
 var shipAxis = "Y";
 var axisBtn = document.getElementById("axis");
-var playerSquares = document.querySelectorAll("#player-board > .square");
 var highlight = function highlight(el, length) {
   var data = el.dataset.coords;
   data = data.split(",");
@@ -38,7 +44,6 @@ var unHighlight = function unHighlight(el, length) {
   var data = el.dataset.coords;
   data = data.split(",");
   if (shipAxis === "X") {
-    console.log(shipAxis);
     for (var i = 0; i < length; i += 1) {
       var square = document.querySelector("[data-coords=\"".concat(data[0], ",").concat(Number(data[1]) + i, "\"]"));
       square.classList.remove("ship-four");
@@ -54,17 +59,45 @@ var changeAxis = function changeAxis() {
   if (shipAxis === "Y") {
     shipAxis = "X";
   } else shipAxis = "Y";
-  console.log(shipAxis);
 };
 var displayShips = function displayShips(shipSquares) {
-  console.log(shipSquares.length);
+  var allSquares = document.querySelectorAll("#player-board > div");
+  allSquares.forEach(function (div) {
+    return div.className = "square";
+  });
+  if (!shipSquares) return;
   for (var i = 0; i < shipSquares.length; i += 1) {
     var square = document.querySelector("[data-coords=\"".concat(shipSquares[i], "\"]"));
     square.classList.add("placed-ship");
-    console.log(square);
   }
 };
+var attackHighlight = function attackHighlight(el) {
+  el.classList.add("ship-four");
+};
+var attackUnhighlight = function attackUnhighlight(el) {
+  el.classList.remove("ship-four");
+};
+var displayMessage = function displayMessage(message) {
+  var messageBox = document.getElementById("message-box");
+  messageBox.textContent = message;
+};
+var displayAttack = function displayAttack(el, result) {
+  var square = el;
+  if (result === false) square.classList = "miss";
+  if (result === true || result === "Game Over") square.classList = "hit";
+};
+var resestBoardDisplay = function resestBoardDisplay() {
+  var allPlayerSquares = document.querySelectorAll("#player-board > div");
+  var allCompSquares = document.querySelectorAll("#computer-board > div");
+  allPlayerSquares.forEach(function (div) {
+    return div.classList = "square";
+  });
+  allCompSquares.forEach(function (div) {
+    return div.classList = "square";
+  });
+};
 axisBtn.addEventListener("click", changeAxis);
+
 
 /***/ }),
 
@@ -78,17 +111,31 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _DOMinteraction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../DOMinteraction */ "./src/DOMinteraction.js");
+/* eslint-disable consistent-return */
 /* eslint-disable no-return-assign */
-var GameboardFactory = function GameboardFactory(name) {
-  var boardName = function boardName() {
-    return name;
-  };
-  var board = [];
+
+var GameboardFactory = function GameboardFactory(name, opponent) {
+  var PlayerName = name;
+  var unHitSquares = [];
   var shipPositions = [];
   var shipsArray = [];
   var missedHits = [];
   var takenSquares = [];
   var receivedAttacksCoords = [];
+  var positionAvailable = true;
+  var getUnHitSquares = function getUnHitSquares() {
+    return unHitSquares;
+  };
+  var getPositionAvailable = function getPositionAvailable() {
+    return positionAvailable;
+  };
+  var getTakenSquares = function getTakenSquares() {
+    return takenSquares;
+  };
+  var getreceivedAttacksCoords = function getreceivedAttacksCoords() {
+    return receivedAttacksCoords;
+  };
   var checkIfGameOver = function checkIfGameOver() {
     return shipsArray.every(function (ship) {
       return ship.sunkStatus() === true;
@@ -96,14 +143,14 @@ var GameboardFactory = function GameboardFactory(name) {
   };
   for (var i = 1; i < 11; i += 1) {
     for (var j = 1; j < 11; j += 1) {
-      board.push([i, j]);
+      unHitSquares.push([i, j].toString());
     }
   }
 
   // PLace ship on board
   var placeShip = function placeShip(ship, direction, x, y) {
     var coords = [[x, y]];
-
+    positionAvailable = true;
     // Get coords for placing
     for (var _i = 1; _i < ship.getLength(); _i += 1) {
       if (direction === "X") {
@@ -111,16 +158,21 @@ var GameboardFactory = function GameboardFactory(name) {
       } else coords.push([x + _i, y]);
     }
     // Check if outside board
-    if (coords[coords.length - 1][1] > 10) return "Please place ship inside grid";
+    if (coords[coords.length - 1][1] > 10 || coords[coords.length - 1][0] > 10) {
+      positionAvailable = false;
+      (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_0__.displayMessage)("Please place ship inside grid");
+      return;
+    }
     coords = coords.map(function (arr) {
       return arr.toString();
     });
-
     // Check if squares are taken
-    for (var _i2 = 0; _i2 < shipPositions.length; _i2 += 1) {
-      for (var _j = 0; _j < coords.length - 1; _j += 1) {
-        if (shipPositions[_i2].coords.includes(coords[_j])) {
-          return "Can't place ship here.";
+    for (var _i2 = 0; _i2 < takenSquares.length; _i2 += 1) {
+      for (var _j = 0; _j < coords.length; _j += 1) {
+        if (takenSquares.includes(coords[_j])) {
+          positionAvailable = false;
+          (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_0__.displayMessage)("Can't place ship here.");
+          return;
         }
       }
     }
@@ -138,16 +190,22 @@ var GameboardFactory = function GameboardFactory(name) {
 
   // receive attack coords
   var receiveAttack = function receiveAttack(x, y) {
+    console.log(receivedAttacksCoords);
     var hitShip = "";
     var indexToHit = "";
     var hitPos = "";
     if (receivedAttacksCoords.indexOf([x, y].toString()) > -1) {
-      return "Please select another square";
+      console.log([x, y], receivedAttacksCoords);
+      (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_0__.displayMessage)("Please select another square");
+      return;
     }
     receivedAttacksCoords.push([x, y].toString());
+    var indexInBoard = unHitSquares.indexOf([x, y].toString());
     if (takenSquares.indexOf([x, y].toString()) === -1) {
       missedHits.push([x, y].toString());
-      return "Miss!";
+      unHitSquares.splice(indexInBoard, 1);
+      (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_0__.displayMessage)("".concat(opponent, " miss!"));
+      return false;
     }
     shipPositions.forEach(function (obj) {
       return obj.coords.includes([x, y].toString()) ? hitShip = obj : "Nashi";
@@ -160,16 +218,38 @@ var GameboardFactory = function GameboardFactory(name) {
     });
     shipsArray[indexToHit].hit(hitPos);
     if (checkIfGameOver()) {
+      (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_0__.displayMessage)("Game over! ".concat(opponent, " wins!"));
       return "Game Over";
     }
-    return "It's a hit!";
+    unHitSquares.splice(indexInBoard, 1);
+    (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_0__.displayMessage)("Hit for ".concat(opponent));
+    return true;
+  };
+  var resetBoard = function resetBoard() {
+    unHitSquares = [];
+    for (var _i3 = 1; _i3 < 11; _i3 += 1) {
+      for (var _j2 = 1; _j2 < 11; _j2 += 1) {
+        unHitSquares.push([_i3, _j2].toString());
+      }
+    }
+    shipPositions = [];
+    shipsArray = [];
+    missedHits = [];
+    takenSquares = [];
+    receivedAttacksCoords = [];
+    positionAvailable = true;
+    console.log("reset!");
   };
   return {
     placeShip: placeShip,
     receiveAttack: receiveAttack,
     shipPositions: shipPositions,
     shipsArray: shipsArray,
-    takenSquares: takenSquares
+    getTakenSquares: getTakenSquares,
+    getPositionAvailable: getPositionAvailable,
+    resetBoard: resetBoard,
+    getreceivedAttacksCoords: getreceivedAttacksCoords,
+    getUnHitSquares: getUnHitSquares
   };
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (GameboardFactory);
@@ -186,19 +266,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-var Player = function Player(name, enemyBoard) {
-  var playerName = name;
+/* harmony import */ var _helpers_functions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/functions */ "./src/helpers/functions.js");
+/* harmony import */ var _DOMinteraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../DOMinteraction */ "./src/DOMinteraction.js");
 
+
+var Player = function Player(name, enemyBoard) {
   // no of unplaced ships
+  var playerName = name;
 
   // take a shot (random or manual)
 
-  var takeShot = function takeShot(x, y) {
-    return enemyBoard.receiveAttack(x, y);
+  var randomShot = function randomShot() {
+    var squaresToHit = enemyBoard.getUnHitSquares();
+    var attackSquare = squaresToHit[(0,_helpers_functions__WEBPACK_IMPORTED_MODULE_0__.randomNum)(squaresToHit.length - 1)];
+    var playerSquareEl = document.querySelector("#player-board > [data-coords=\"".concat(attackSquare, "\"]"));
+    attackSquare = attackSquare.split(",");
+    var result = enemyBoard.receiveAttack(Number(attackSquare[0]), Number(attackSquare[1]));
+    (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_1__.displayAttack)(playerSquareEl, result);
+  };
+  var takeShot = function takeShot(el) {
+    var data = el.dataset.coords;
+    data = data.split(",");
+    return enemyBoard.receiveAttack(Number(data[0]), Number(data[1]));
   };
   return {
     playerName: playerName,
-    takeShot: takeShot
+    takeShot: takeShot,
+    randomShot: randomShot
   };
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Player);
@@ -232,6 +326,7 @@ var ShipFactory = function ShipFactory(name, length) {
     if (health <= 0) {
       return isSunk();
     }
+    console.log("It's a hit!");
     return "Ouch";
   };
   var sunkStatus = function sunkStatus() {
@@ -249,6 +344,11 @@ var ShipFactory = function ShipFactory(name, length) {
   var setCoords = function setCoords(coords) {
     return hitMarks.push(coords);
   };
+  var reset = function reset() {
+    sunk = false;
+    health = length;
+    hitMarks = [];
+  };
   return {
     hitMarks: hitMarks,
     hit: hit,
@@ -257,6 +357,7 @@ var ShipFactory = function ShipFactory(name, length) {
     getName: getName,
     getLength: getLength,
     sunkStatus: sunkStatus,
+    reset: reset,
     sunk: sunk
   };
 };
@@ -291,6 +392,37 @@ var renderBoard = function renderBoard(id) {
 
 /***/ }),
 
+/***/ "./src/components/gameControls.js":
+/*!****************************************!*\
+  !*** ./src/components/gameControls.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "restartGame": () => (/* binding */ restartGame)
+/* harmony export */ });
+/* harmony import */ var _helpers_functions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/functions */ "./src/helpers/functions.js");
+/* harmony import */ var _DOMinteraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../DOMinteraction */ "./src/DOMinteraction.js");
+/* harmony import */ var _helpers_ships__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/ships */ "./src/helpers/ships.js");
+/* eslint-disable no-import-assign */
+/* eslint-disable import/prefer-default-export */
+
+
+
+var restartGame = function restartGame() {
+  // boardOne.resetBoard();
+  // boardTwo.resetBoard();
+  (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_0__.unhide)("setup-btns");
+  (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_0__.hide)("computer");
+  (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_0__.hide)("start-btn");
+  (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_0__.hide)("replay-btn");
+  (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_1__.resestBoardDisplay)();
+  (0,_helpers_ships__WEBPACK_IMPORTED_MODULE_2__.resetAllShips)();
+};
+
+/***/ }),
+
 /***/ "./src/components/gameSetup.js":
 /*!*************************************!*\
   !*** ./src/components/gameSetup.js ***!
@@ -299,30 +431,136 @@ var renderBoard = function renderBoard(id) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "placeYourShips": () => (/* binding */ placeYourShips)
+/* harmony export */   "gameSetup": () => (/* binding */ gameSetup)
 /* harmony export */ });
-/* harmony import */ var _helpers_ships__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../helpers/ships */ "./src/helpers/ships.js");
-/* harmony import */ var _DOMinteraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../DOMinteraction */ "./src/DOMinteraction.js");
+/* harmony import */ var _DOMinteraction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../DOMinteraction */ "./src/DOMinteraction.js");
+/* harmony import */ var _helpers_ships__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../helpers/ships */ "./src/helpers/ships.js");
+/* harmony import */ var _helpers_randomPlacement__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../helpers/randomPlacement */ "./src/helpers/randomPlacement.js");
+/* harmony import */ var _helpers_functions__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../helpers/functions */ "./src/helpers/functions.js");
+/* eslint-disable import/no-cycle */
+/* eslint-disable no-return-assign */
+/* eslint-disable import/no-mutable-exports */
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable no-undef */
 
 
-var shipNumber = 0;
-var allShipsPlaced = false;
-var placeYourShips = function placeYourShips(board) {
-  while (!allShipsPlaced) {
-    _DOMinteraction__WEBPACK_IMPORTED_MODULE_1__.playerSquares.forEach(function (sq) {
-      return sq.addEventListener("click", function () {
-        return addShip(board);
-      });
+
+
+var shipIndex = 0;
+var gameSetup = function gameSetup(playerboard) {
+  var playerSquares = document.querySelectorAll("#player-board > .square");
+  playerSquares.forEach(function (el) {
+    return el.addEventListener("mouseover", function () {
+      return (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_0__.highlight)(el, _helpers_ships__WEBPACK_IMPORTED_MODULE_1__.playerShips[shipIndex].getLength());
     });
+  });
+  playerSquares.forEach(function (el) {
+    return el.addEventListener("mouseout", function () {
+      return (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_0__.unHighlight)(el, _helpers_ships__WEBPACK_IMPORTED_MODULE_1__.playerShips[shipIndex].getLength());
+    });
+  });
+  playerSquares.forEach(function (el) {
+    return el.addEventListener("click", function () {
+      var data = el.dataset.coords;
+      data = data.split(",");
+      playerboard.placeShip(_helpers_ships__WEBPACK_IMPORTED_MODULE_1__.playerShips[shipIndex], _DOMinteraction__WEBPACK_IMPORTED_MODULE_0__.shipAxis, Number(data[0]), Number(data[1]));
+      if (playerboard.getPositionAvailable()) {
+        shipIndex += 1;
+        (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_0__.displayShips)(playerboard.getTakenSquares());
+      }
+      if (shipIndex === 5) (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_3__.unhide)("start-btn");
+    });
+  });
+  var randomPlacementBtn = document.getElementById("random");
+  randomPlacementBtn.addEventListener("click", function () {
+    shipIndex = 0;
+    playerboard.resetBoard();
+    (0,_helpers_randomPlacement__WEBPACK_IMPORTED_MODULE_2__.randomShipPlacement)(playerboard, _helpers_ships__WEBPACK_IMPORTED_MODULE_1__.playerShips);
+    (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_0__.displayShips)(playerboard.getTakenSquares());
+    shipIndex = 5;
+    (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_3__.unhide)("start-btn");
+  });
+  var resestBtn = document.getElementById("reset");
+  var replayBtn = document.getElementById("replay");
+  resestBtn.addEventListener("click", function () {
+    shipIndex = 0;
+    playerboard.resetBoard();
+    (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_0__.displayShips)();
+    (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_3__.hide)("start-btn");
+  });
+  replayBtn.addEventListener("click", function () {
+    return shipIndex = 0;
+  });
+};
+
+/***/ }),
+
+/***/ "./src/helpers/functions.js":
+/*!**********************************!*\
+  !*** ./src/helpers/functions.js ***!
+  \**********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "getRandomUnhitSquare": () => (/* binding */ getRandomUnhitSquare),
+/* harmony export */   "hide": () => (/* binding */ hide),
+/* harmony export */   "randomNum": () => (/* binding */ randomNum),
+/* harmony export */   "randomXorY": () => (/* binding */ randomXorY),
+/* harmony export */   "unhide": () => (/* binding */ unhide)
+/* harmony export */ });
+/* harmony import */ var _DOMinteraction__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../DOMinteraction */ "./src/DOMinteraction.js");
+/* eslint-disable no-undef */
+
+
+
+/* eslint-disable import/prefer-default-export */
+var randomNum = function randomNum(range) {
+  return Math.floor(Math.random() * range) + 1;
+};
+var randomXorY = function randomXorY() {
+  var arr = ["X", "Y"];
+  return arr[randomNum(2) - 1];
+};
+var hide = function hide(elementId) {
+  var elementToHide = document.getElementById(elementId);
+  elementToHide.classList.add("hide");
+};
+var unhide = function unhide(elementId) {
+  var elementToUnHide = document.getElementById(elementId);
+  elementToUnHide.classList.remove("hide");
+};
+var getRandomUnhitSquare = function getRandomUnhitSquare(board) {
+  var squaresToHit = enemyBoard.getUnHitSquares();
+  var attackSquare = squaresToHit[randomNum(squaresToHit.length - 1)];
+};
+
+/***/ }),
+
+/***/ "./src/helpers/randomPlacement.js":
+/*!****************************************!*\
+  !*** ./src/helpers/randomPlacement.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "randomShipPlacement": () => (/* binding */ randomShipPlacement)
+/* harmony export */ });
+/* harmony import */ var _functions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./functions */ "./src/helpers/functions.js");
+/* harmony import */ var _DOMinteraction__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../DOMinteraction */ "./src/DOMinteraction.js");
+/* eslint-disable import/prefer-default-export */
+
+
+var randomShipPlacement = function randomShipPlacement(board, ships) {
+  var currentShip = 0;
+  while (currentShip < 5) {
+    board.placeShip(ships[currentShip], (0,_functions__WEBPACK_IMPORTED_MODULE_0__.randomXorY)(), (0,_functions__WEBPACK_IMPORTED_MODULE_0__.randomNum)(10), (0,_functions__WEBPACK_IMPORTED_MODULE_0__.randomNum)(10));
+    if (board.getPositionAvailable()) {
+      currentShip += 1;
+    }
   }
 };
-function addShip(board) {
-  board.placeShip(_helpers_ships__WEBPACK_IMPORTED_MODULE_0__["default"][shipNumber]);
-  shipNumber += 1;
-  if (shipNumber === 4) {
-    allShipsPlaced = true;
-  }
-}
 
 /***/ }),
 
@@ -334,7 +572,9 @@ function addShip(board) {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   "computerShips": () => (/* binding */ computerShips),
+/* harmony export */   "playerShips": () => (/* binding */ playerShips),
+/* harmony export */   "resetAllShips": () => (/* binding */ resetAllShips)
 /* harmony export */ });
 /* harmony import */ var _Factories_ship__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Factories/ship */ "./src/Factories/ship.js");
 
@@ -352,7 +592,15 @@ var compSub = new _Factories_ship__WEBPACK_IMPORTED_MODULE_0__["default"]("sub",
 var compDestroyer = new _Factories_ship__WEBPACK_IMPORTED_MODULE_0__["default"]("destroyer", 2);
 playerShips.push(playerCarrier, playerBattleship, playerCruiser, playerSub, playerDestroyer);
 computerShips.push(compCarrier, compBattleship, compCruiser, compSub, compDestroyer);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (playerShips);
+var resetAllShips = function resetAllShips() {
+  playerShips.forEach(function (ship) {
+    return ship.reset();
+  });
+  computerShips.forEach(function (ship) {
+    return ship.reset();
+  });
+};
+
 
 /***/ }),
 
@@ -375,7 +623,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_sourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "h1 {\n    color: blue;\n}\n\nbody {\n    background: pink;\n    text-align: center;\n}\n\n.square {\n    display: flex;\n    height: 100%;\n    width: 100%;\n    background: grey;\n    border: 1px solid black;\n\n}\n\n.board {\n    display: grid;\n    grid-template-columns: repeat(10, 25px);\n    grid-template-rows: repeat(10, 25px);\n    overflow: hidden;\n}\n\n.boards-wrapper {\n    display: flex;\n    justify-content: space-around;\n    align-items: center;\n    flex-wrap: wrap;\n    gap: 50px;\n}\n\n.ship-four {\n    height: 23px;\n    width: 23px;\n    background: blue;\n    border: 1px solid black;\n    z-index: 0;\n\n}\n\n.ship {\n    display: flex;\n    flex-direction: column;\n    z-index: 0;\n    height: fit-content;\n}\n\n#axis {\n    margin: 20px;\n}\n\n.placed-ship {\n    height: 23px;\n    width: 23px;\n    background: rgb(49, 231, 21);\n    border: 1px solid black;\n\n}", "",{"version":3,"sources":["webpack://./src/styles.css"],"names":[],"mappings":"AAAA;IACI,WAAW;AACf;;AAEA;IACI,gBAAgB;IAChB,kBAAkB;AACtB;;AAEA;IACI,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,uBAAuB;;AAE3B;;AAEA;IACI,aAAa;IACb,uCAAuC;IACvC,oCAAoC;IACpC,gBAAgB;AACpB;;AAEA;IACI,aAAa;IACb,6BAA6B;IAC7B,mBAAmB;IACnB,eAAe;IACf,SAAS;AACb;;AAEA;IACI,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,uBAAuB;IACvB,UAAU;;AAEd;;AAEA;IACI,aAAa;IACb,sBAAsB;IACtB,UAAU;IACV,mBAAmB;AACvB;;AAEA;IACI,YAAY;AAChB;;AAEA;IACI,YAAY;IACZ,WAAW;IACX,4BAA4B;IAC5B,uBAAuB;;AAE3B","sourcesContent":["h1 {\n    color: blue;\n}\n\nbody {\n    background: pink;\n    text-align: center;\n}\n\n.square {\n    display: flex;\n    height: 100%;\n    width: 100%;\n    background: grey;\n    border: 1px solid black;\n\n}\n\n.board {\n    display: grid;\n    grid-template-columns: repeat(10, 25px);\n    grid-template-rows: repeat(10, 25px);\n    overflow: hidden;\n}\n\n.boards-wrapper {\n    display: flex;\n    justify-content: space-around;\n    align-items: center;\n    flex-wrap: wrap;\n    gap: 50px;\n}\n\n.ship-four {\n    height: 23px;\n    width: 23px;\n    background: blue;\n    border: 1px solid black;\n    z-index: 0;\n\n}\n\n.ship {\n    display: flex;\n    flex-direction: column;\n    z-index: 0;\n    height: fit-content;\n}\n\n#axis {\n    margin: 20px;\n}\n\n.placed-ship {\n    height: 23px;\n    width: 23px;\n    background: rgb(49, 231, 21);\n    border: 1px solid black;\n\n}"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "html,\nbody {\n    padding: 0;\n    margin: 0;\n    font-size: 10px;\n}\n\nh1 {\n    font-size: 2rem;\n    color: blue;\n}\n\nh3 {\n    font-size: 2rem;\n}\n\nbody {\n    background: pink;\n    text-align: center;\n}\n\n#message-box {\n    font-size: 1.5rem;\n    width: 70%;\n    margin: 0 auto;\n    border: 1px solid blue;\n    padding: 10px;\n    background: gray;\n    color: rgb(136, 231, 121);\n}\n\n.square {\n    display: flex;\n    height: 100%;\n    width: 100%;\n    background: grey;\n    border: 1px solid black;\n\n}\n\n.board {\n    display: grid;\n    grid-template-columns: repeat(10, 20px);\n    grid-template-rows: repeat(10, 20px);\n    overflow: hidden;\n}\n\n.boards-wrapper {\n    display: flex;\n    justify-content: space-around;\n    align-items: center;\n    flex-wrap: wrap;\n    gap: 10px;\n    margin-top: 20px;\n}\n\n.ship-four {\n    height: 20px;\n    width: 20px;\n    background: blue;\n    border: 1px solid black;\n    z-index: 0;\n\n}\n\n.hit {\n    background-color: red;\n}\n\n.miss {\n    background-color: yellow;\n}\n\n.ship {\n    display: flex;\n    flex-direction: column;\n    z-index: 0;\n    height: fit-content;\n}\n\nbutton {\n    margin: 10px;\n    min-width: 90px;\n}\n\n#setup-btns {\n    max-width: 300px;\n    margin: 0 auto;\n    display: flex;\n    flex-direction: column;\n}\n\n#start {\n    font-size: 20px;\n    padding: 10px;\n}\n\n.placed-ship {\n    height: 23px;\n    width: 23px;\n    background: rgb(49, 231, 21);\n    border: 1px solid black;\n\n}\n\n.hide {\n    display: none !important;\n}", "",{"version":3,"sources":["webpack://./src/styles.css"],"names":[],"mappings":"AAAA;;IAEI,UAAU;IACV,SAAS;IACT,eAAe;AACnB;;AAEA;IACI,eAAe;IACf,WAAW;AACf;;AAEA;IACI,eAAe;AACnB;;AAEA;IACI,gBAAgB;IAChB,kBAAkB;AACtB;;AAEA;IACI,iBAAiB;IACjB,UAAU;IACV,cAAc;IACd,sBAAsB;IACtB,aAAa;IACb,gBAAgB;IAChB,yBAAyB;AAC7B;;AAEA;IACI,aAAa;IACb,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,uBAAuB;;AAE3B;;AAEA;IACI,aAAa;IACb,uCAAuC;IACvC,oCAAoC;IACpC,gBAAgB;AACpB;;AAEA;IACI,aAAa;IACb,6BAA6B;IAC7B,mBAAmB;IACnB,eAAe;IACf,SAAS;IACT,gBAAgB;AACpB;;AAEA;IACI,YAAY;IACZ,WAAW;IACX,gBAAgB;IAChB,uBAAuB;IACvB,UAAU;;AAEd;;AAEA;IACI,qBAAqB;AACzB;;AAEA;IACI,wBAAwB;AAC5B;;AAEA;IACI,aAAa;IACb,sBAAsB;IACtB,UAAU;IACV,mBAAmB;AACvB;;AAEA;IACI,YAAY;IACZ,eAAe;AACnB;;AAEA;IACI,gBAAgB;IAChB,cAAc;IACd,aAAa;IACb,sBAAsB;AAC1B;;AAEA;IACI,eAAe;IACf,aAAa;AACjB;;AAEA;IACI,YAAY;IACZ,WAAW;IACX,4BAA4B;IAC5B,uBAAuB;;AAE3B;;AAEA;IACI,wBAAwB;AAC5B","sourcesContent":["html,\nbody {\n    padding: 0;\n    margin: 0;\n    font-size: 10px;\n}\n\nh1 {\n    font-size: 2rem;\n    color: blue;\n}\n\nh3 {\n    font-size: 2rem;\n}\n\nbody {\n    background: pink;\n    text-align: center;\n}\n\n#message-box {\n    font-size: 1.5rem;\n    width: 70%;\n    margin: 0 auto;\n    border: 1px solid blue;\n    padding: 10px;\n    background: gray;\n    color: rgb(136, 231, 121);\n}\n\n.square {\n    display: flex;\n    height: 100%;\n    width: 100%;\n    background: grey;\n    border: 1px solid black;\n\n}\n\n.board {\n    display: grid;\n    grid-template-columns: repeat(10, 20px);\n    grid-template-rows: repeat(10, 20px);\n    overflow: hidden;\n}\n\n.boards-wrapper {\n    display: flex;\n    justify-content: space-around;\n    align-items: center;\n    flex-wrap: wrap;\n    gap: 10px;\n    margin-top: 20px;\n}\n\n.ship-four {\n    height: 20px;\n    width: 20px;\n    background: blue;\n    border: 1px solid black;\n    z-index: 0;\n\n}\n\n.hit {\n    background-color: red;\n}\n\n.miss {\n    background-color: yellow;\n}\n\n.ship {\n    display: flex;\n    flex-direction: column;\n    z-index: 0;\n    height: fit-content;\n}\n\nbutton {\n    margin: 10px;\n    min-width: 90px;\n}\n\n#setup-btns {\n    max-width: 300px;\n    margin: 0 auto;\n    display: flex;\n    flex-direction: column;\n}\n\n#start {\n    font-size: 20px;\n    padding: 10px;\n}\n\n.placed-ship {\n    height: 23px;\n    width: 23px;\n    background: rgb(49, 231, 21);\n    border: 1px solid black;\n\n}\n\n.hide {\n    display: none !important;\n}"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -966,12 +1214,14 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./styles.css */ "./src/styles.css");
 /* harmony import */ var _Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Factories/gameboard */ "./src/Factories/gameboard.js");
-/* harmony import */ var _Factories_ship__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Factories/ship */ "./src/Factories/ship.js");
-/* harmony import */ var _Factories_player__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Factories/player */ "./src/Factories/player.js");
-/* harmony import */ var _components_boards__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/boards */ "./src/components/boards.js");
-/* harmony import */ var _DOMinteraction__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./DOMinteraction */ "./src/DOMinteraction.js");
-/* harmony import */ var _helpers_ships__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./helpers/ships */ "./src/helpers/ships.js");
-/* harmony import */ var _components_gameSetup__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/gameSetup */ "./src/components/gameSetup.js");
+/* harmony import */ var _components_boards__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/boards */ "./src/components/boards.js");
+/* harmony import */ var _components_gameSetup__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/gameSetup */ "./src/components/gameSetup.js");
+/* harmony import */ var _DOMinteraction__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./DOMinteraction */ "./src/DOMinteraction.js");
+/* harmony import */ var _helpers_functions__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./helpers/functions */ "./src/helpers/functions.js");
+/* harmony import */ var _helpers_randomPlacement__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./helpers/randomPlacement */ "./src/helpers/randomPlacement.js");
+/* harmony import */ var _helpers_ships__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./helpers/ships */ "./src/helpers/ships.js");
+/* harmony import */ var _Factories_player__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Factories/player */ "./src/Factories/player.js");
+/* harmony import */ var _components_gameControls__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./components/gameControls */ "./src/components/gameControls.js");
 /* eslint-disable no-undef */
 
 
@@ -981,28 +1231,72 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var playerboard = (0,_Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__["default"])("player");
-var computerBoard = (0,_Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__["default"])("computer");
 
-// playerboard.placeShip(playerShips[0], "X", 3, 1);
-// playerboard.placeShip(playerShips[1], "Y", 4, 1);
 
-(0,_components_boards__WEBPACK_IMPORTED_MODULE_4__["default"])("player-board");
-(0,_components_boards__WEBPACK_IMPORTED_MODULE_4__["default"])("computer-board");
-(0,_components_gameSetup__WEBPACK_IMPORTED_MODULE_7__.placeYourShips)(playerboard);
-(0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_5__.displayShips)(playerboard.takenSquares);
-_DOMinteraction__WEBPACK_IMPORTED_MODULE_5__.playerSquares.forEach(function (el) {
-  return el.addEventListener("mouseover", function () {
-    return (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_5__.highlight)(el, 4);
+var playerboard = new _Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__["default"]("player", "Computer");
+var computerBoard = new _Factories_gameboard__WEBPACK_IMPORTED_MODULE_1__["default"]("computer", "Player");
+var human = new _Factories_player__WEBPACK_IMPORTED_MODULE_8__["default"]("Player", computerBoard);
+var computer = new _Factories_player__WEBPACK_IMPORTED_MODULE_8__["default"]("Computer", playerboard);
+(0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_4__.displayMessage)("Place your ships!");
+(0,_components_boards__WEBPACK_IMPORTED_MODULE_2__["default"])("player-board");
+(0,_components_boards__WEBPACK_IMPORTED_MODULE_2__["default"])("computer-board");
+(0,_components_gameSetup__WEBPACK_IMPORTED_MODULE_3__.gameSetup)(playerboard);
+var compSquares = document.querySelectorAll("#computer-board > .square");
+var playerSquares = document.querySelectorAll("#player-board > .square");
+var result;
+var gameOver = false;
+var firstRound = true;
+var startGame = function startGame() {
+  gameOver = false;
+  (0,_helpers_randomPlacement__WEBPACK_IMPORTED_MODULE_6__.randomShipPlacement)(computerBoard, _helpers_ships__WEBPACK_IMPORTED_MODULE_7__.computerShips);
+  (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_5__.hide)("setup-btns");
+  (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_5__.unhide)("computer");
+  (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_4__.displayMessage)("Player turn");
+  (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_5__.hide)("start-btn");
+  (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_5__.hide)("replay-btn");
+  compSquares.forEach(function (el) {
+    return el.addEventListener("mouseover", function () {
+      return (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_4__.attackHighlight)(el);
+    });
   });
-});
-_DOMinteraction__WEBPACK_IMPORTED_MODULE_5__.playerSquares.forEach(function (el) {
-  return el.addEventListener("mouseout", function () {
-    return (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_5__.unHighlight)(el, 4);
+  compSquares.forEach(function (el) {
+    return el.addEventListener("mouseout", function () {
+      return (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_4__.attackUnhighlight)(el);
+    });
   });
+  if (firstRound === true) {
+    compSquares.forEach(function (el) {
+      return el.addEventListener("click", function () {
+        if (gameOver === true) {
+          (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_5__.unhide)("replay-btn");
+          return;
+        }
+        result = human.takeShot(el);
+        (0,_DOMinteraction__WEBPACK_IMPORTED_MODULE_4__.displayAttack)(el, result);
+        if (result === "Game Over") gameOver = true;
+        if (gameOver === true) {
+          (0,_helpers_functions__WEBPACK_IMPORTED_MODULE_5__.unhide)("replay-btn");
+          return;
+        }
+        result = setTimeout(function () {
+          computer.randomShot();
+        }, 1.5 * 1000);
+        if (result === "Game Over") gameOver = true;
+        firstRound = false;
+      });
+    });
+  }
+};
+var startGameBtn = document.getElementById("start");
+var replayBtn = document.getElementById("replay");
+startGameBtn.addEventListener("click", startGame);
+replayBtn.addEventListener("click", function () {
+  playerboard.resetBoard();
+  computerBoard.resetBoard();
+  (0,_components_gameControls__WEBPACK_IMPORTED_MODULE_9__.restartGame)();
 });
 })();
 
 /******/ })()
 ;
-//# sourceMappingURL=bundle62c3cd40351d89bd8bab.js.map
+//# sourceMappingURL=bundle15ab0a0e6caf3d4c6bb5.js.map

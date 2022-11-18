@@ -8,7 +8,7 @@
     <title>
         Webpack App
     </title>
-<script defer src="bundle62c3cd40351d89bd8bab.js"></script></head>
+<script defer src="bundle15ab0a0e6caf3d4c6bb5.js"></script></head>
 
 <body>
     <div class="container">
@@ -18,13 +18,19 @@
         <div id="message-box">
             <p>Let's play!</p>
         </div>
-        <button id="axis">Change Axis</button>
+        <div id="setup-btns">
+            <button id="reset">Reset</button>
+            <button id="random">All Random</button>
+            <button id="axis">Change Axis</button>
+        </div>
+        <div id="start-btn" class="hide"><button id="start">START GAME</button></div>
+        <div id="replay-btn" class="hide"><button id="replay">Replay</button></div>
         <div class="boards-wrapper">
             <div class="board-section" id="player-section">
                 <div class="board" id="player-board"></div>
                 <h3>Player board</h3>
             </div>
-            <div class="board-section" id="computer">
+            <div class="board-section hide" id="computer">
                 <div class="board" id="computer-board">
                 </div>
                 <h3>Computer board</h3>
