@@ -1,3 +1,7 @@
+:root {
+    --mainColor: rgb(255, 255, 255);
+  }
+
 html,
 body {
     padding: 0;
@@ -12,13 +16,13 @@ h1 {
 
 h3 {
     font-size: 2rem;
-    background: #262f30;
+    background: var(--mainColor);
     margin: 0;
     padding: 3px;
 }
 
 body {
-    background: rgba(255, 192, 203, 0);
+    background: var(--mainColor);
     text-align: center;
 }
 
@@ -98,8 +102,10 @@ body {
 }
 
 button {
+    border: 1px solid black;
     margin: 10px;
     min-width: 90px;
+    padding: 5px;
 }
 
 #setup-btns {
