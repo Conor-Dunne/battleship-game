@@ -8,6 +8,7 @@ import {
   unHighlight,
   displayShips,
   shipAxis,
+  displayMessage,
 } from "../DOMinteraction";
 import { playerShips } from "../helpers/ships";
 import { randomShipPlacement } from "../helpers/randomPlacement";
@@ -44,8 +45,12 @@ export const gameSetup = (playerboard) => {
       if (playerboard.getPositionAvailable()) {
         shipIndex += 1;
         displayShips(playerboard.getTakenSquares());
+        displayMessage("Place your ships");
       }
-      if (shipIndex === 5) unhide("start-btn");
+      if (shipIndex === 5) {
+        unhide("start-btn");
+        displayMessage("Press Start");
+      };
     })
   );
 
@@ -68,6 +73,7 @@ export const gameSetup = (playerboard) => {
     playerboard.resetBoard();
     displayShips();
     hide("start-btn");
+    displayMessage("Place your ships");
   });
 
   replayBtn.addEventListener("click", () => (shipIndex = 0));

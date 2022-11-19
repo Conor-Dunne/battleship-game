@@ -15,8 +15,8 @@ import { computerShips } from "./helpers/ships";
 import Player from "./Factories/player";
 import { restartGame } from "./components/gameControls";
 
-let playerboard = new GameboardFactory("player", "Computer");
-let computerBoard = new GameboardFactory("computer", "Player");
+const playerboard = new GameboardFactory("player", "Computer");
+const computerBoard = new GameboardFactory("computer", "Player");
 
 const human = new Player("Player", computerBoard);
 const computer = new Player("Computer", playerboard);
@@ -51,26 +51,26 @@ const startGame = function () {
   );
 
   if (firstRound === true) {
-  compSquares.forEach((el) =>
-    el.addEventListener("click", () => {
-      if (gameOver === true) {
-        unhide("replay-btn");
-        return;
-      }
-      result = human.takeShot(el);
-      displayAttack(el, result);
-      if (result === "Game Over") gameOver = true;
-      if (gameOver === true) {
-        unhide("replay-btn");
-        return;
-      }
-      result = setTimeout(() => {
-        computer.randomShot();
-      }, 1.5 * 1000);
-      if (result === "Game Over") gameOver = true;
-      firstRound = false;
-    })
-  );
+    compSquares.forEach((el) =>
+      el.addEventListener("click", () => {
+        if (gameOver === true) {
+          unhide("replay-btn");
+          return;
+        }
+        result = human.takeShot(el);
+        displayAttack(el, result);
+        if (result === "Game Over") gameOver = true;
+        if (gameOver === true) {
+          unhide("replay-btn");
+          return;
+        }
+        result = setTimeout(() => {
+          computer.randomShot();
+        }, 1.5 * 1000);
+        if (result === "Game Over") gameOver = true;
+        firstRound = false;
+      })
+    );
   }
 };
 

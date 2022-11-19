@@ -1,6 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { randomNum, randomXorY } from "./functions";
-import { displayShips } from "../DOMinteraction";
+import { displayShips, displayMessage } from "../DOMinteraction";
+
 
 export const randomShipPlacement = function (board, ships) {
   let currentShip = 0;
@@ -16,5 +17,5 @@ export const randomShipPlacement = function (board, ships) {
       currentShip += 1;
     }
   }
+  displayMessage("Press Start");
 };
-
