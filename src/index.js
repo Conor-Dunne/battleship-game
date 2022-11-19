@@ -59,15 +59,23 @@ const startGame = function () {
         }
         result = human.takeShot(el);
         displayAttack(el, result);
-        if (result === "Game Over") gameOver = true;
+        if (result === "Game Over") {
+          gameOver = true;
+          displayMessage("Game over, player wins!");
+          return;
+        }
         if (gameOver === true) {
           unhide("replay-btn");
           return;
         }
         result = setTimeout(() => {
           computer.randomShot();
-        }, 1.5 * 1000);
-        if (result === "Game Over") gameOver = true;
+        }, 1.0 * 1000);
+        if (result === "Game Over") {
+          gameOver = true;
+          displayMessage("Game over, computer wins!");
+          return;
+        }
         firstRound = false;
       })
     );
