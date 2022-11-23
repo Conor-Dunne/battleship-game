@@ -62,6 +62,7 @@ const startGame = function () {
         if (result === "Game Over") {
           gameOver = true;
           displayMessage("Game over, player wins!");
+          unhide("replay-btn");
           return;
         }
         if (gameOver === true) {
@@ -74,6 +75,7 @@ const startGame = function () {
         if (result === "Game Over") {
           gameOver = true;
           displayMessage("Game over, computer wins!");
+          unhide("replay-btn");
           return;
         }
         firstRound = false;
